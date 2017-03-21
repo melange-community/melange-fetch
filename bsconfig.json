@@ -1,0 +1,7 @@
+{
+  "name" : "bs-promise",
+  "sources": [{
+    "dir" : "src",
+    "public": "all"
+  }]
+}
