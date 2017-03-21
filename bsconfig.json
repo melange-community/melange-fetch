@@ -1,7 +1,10 @@
 {
   "name" : "bs-promise",
   "sources": [{
-    "dir" : "src",
+    "dir": "src",
     "public": "all"
+  }, {
+    "dir": "examples",
+    "type": "dev"
   }]
 }

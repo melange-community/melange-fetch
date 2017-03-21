@@ -1,5 +1,3 @@
-type ('a,'e) promise = ('a,'e) Js.promise
-
 type body
 type bodyInit
 type headers
@@ -230,6 +228,7 @@ module Headers = struct
 
   external make : t = "Headers" [@@bs.new]
   external makeWithInit : headersInit -> t = "Headers" [@@bs.new]
+
   external append : string -> string = "" [@@bs.send.pipe: t]
   external delete : string = "" [@@bs.send.pipe: t]
   (* entries *) (* very experimental *)
@@ -254,11 +253,12 @@ module Body = struct
   module Impl(T: sig type t end) = struct
     external body : T.t -> readableStream = "" [@@bs.get]
     external bodyUsed : T.t -> bool = "" [@@bs.get]
-    external arrayBuffer : (arrayBuffer, unit) promise = "" [@@bs.send.pipe: T.t]
-    external blob : (blob, unit) promise = "" [@@bs.send.pipe: T.t]
-    external formData : (formData, unit) promise = "" [@@bs.send.pipe: T.t]
-    external json : (Js.Json.t, unit) promise = "" [@@bs.send.pipe: T.t]
-    external text : (string, unit) promise = "" [@@bs.send.pipe: T.t]
+
+    external arrayBuffer : (arrayBuffer, unit) Js.promise = "" [@@bs.send.pipe: T.t]
+    external blob : (blob, unit) Js.promise = "" [@@bs.send.pipe: T.t]
+    external formData : (formData, unit) Js.promise = "" [@@bs.send.pipe: T.t]
+    external json : (Js.Json.t, unit) Js.promise = "" [@@bs.send.pipe: T.t]
+    external text : (string, unit) Js.promise = "" [@@bs.send.pipe: T.t]
   end
 
   include Impl(struct type t = body end)
@@ -356,12 +356,13 @@ module Response = struct
   external statusText : t -> string = "" [@@bs.get]
   external _type : t -> string = "" [@@bs.get]
   external url : t -> string = "" [@@bs.get]
+
   external clone : t = "" [@@bs.send.pipe: t]
 
   include Body.Impl(struct type t = response end)
 end
 
-external fetch : string -> (response, unit) promise = "" [@@bs.val]
-external fetchWithInit : string -> requestInit -> (response, unit) promise = "fetch" [@@bs.val]
-external fetchWithRequest : request -> (response, unit) promise = "fetch" [@@bs.val]
-external fetchWithRequestInit : request -> requestInit -> (response, unit) promise = "fetch" [@@bs.val]
+external fetch : string -> (response, unit) Js.promise = "" [@@bs.val]
+external fetchWithInit : string -> requestInit -> (response, unit) Js.promise = "fetch" [@@bs.val]
+external fetchWithRequest : request -> (response, unit) Js.promise = "fetch" [@@bs.val]
+external fetchWithRequestInit : request -> requestInit -> (response, unit) Js.promise = "fetch" [@@bs.val]
