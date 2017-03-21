@@ -220,12 +220,14 @@ let decodeRequestRedirect = (* internal *)
 
 module HeadersInit = struct
   type t = headersInit
+
   external make : < .. > Js.t -> t = "%identity"
-  external makeWithArray : (string* string) array -> t = "%identity"
+  external makeWithArray : (string * string) array -> t = "%identity"
 end
 
 module Headers = struct
   type t = headers
+
   external make : t = "Headers" [@@bs.new]
   external makeWithInit : headersInit -> t = "Headers" [@@bs.new]
   external append : string -> string = "" [@@bs.send.pipe: t]
@@ -240,6 +242,7 @@ end
 
 module BodyInit = struct
   type t = bodyInit
+
   external make : string -> t = "%identity"
   external makeWithBlob : blob -> t = "%identity"
   external makeWithBufferSource : bufferSource -> t = "%identity"
@@ -248,14 +251,14 @@ module BodyInit = struct
 end
 
 module Body = struct
-  module Impl(T:sig type t end) = struct
+  module Impl(T: sig type t end) = struct
     external body : T.t -> readableStream = "" [@@bs.get]
     external bodyUsed : T.t -> bool = "" [@@bs.get]
     external arrayBuffer : (arrayBuffer, unit) promise = "" [@@bs.send.pipe: T.t]
     external blob : (blob, unit) promise = "" [@@bs.send.pipe: T.t]
     external formData : (formData, unit) promise = "" [@@bs.send.pipe: T.t]
-    external json : (< .. > Js.t, unit) promise = "" [@@bs.send.pipe: T.t]
-    external text : (string,unit) promise = "" [@@bs.send.pipe: T.t]
+    external json : (Js.Json.t, unit) promise = "" [@@bs.send.pipe: T.t]
+    external text : (string, unit) promise = "" [@@bs.send.pipe: T.t]
   end
 
   include Impl(struct type t = body end)
@@ -315,27 +318,27 @@ module Request = struct
   external makeWithRequest : t -> t = "Request" [@@bs.new]
   external makeWithRequestInit : t -> requestInit -> t = "Request" [@@bs.new]
 
-  external method_ : t -> string = "method"[@@bs.get]
+  external method_ : t -> string = "method" [@@bs.get]
   let method_: t -> requestMethod = fun self -> decodeRequestMethod (method_ self)
   external url : t -> string = ""[@@bs.get]
-  external headers : t -> headers = ""[@@bs.get]
-  external type_ : t -> string = "type"[@@bs.get]
+  external headers : t -> headers = "" [@@bs.get]
+  external type_ : t -> string = "type" [@@bs.get]
   let type_: t -> requestType = fun self -> decodeRequestType (type_ self)
-  external destination : t -> string = ""[@@bs.get]
+  external destination : t -> string = "" [@@bs.get]
   let destination: t -> requestDestination = fun self -> decodeRequestDestination (destination self)
-  external referrer : t -> string = ""[@@bs.get]
-  external referrerPolicy : t -> string = ""[@@bs.get]
+  external referrer : t -> string = "" [@@bs.get]
+  external referrerPolicy : t -> string = "" [@@bs.get]
   let referrerPolicy: t -> referrerPolicy = fun self -> decodeReferrerPolicy (referrerPolicy self)
-  external mode : t -> string = ""[@@bs.get]
+  external mode : t -> string = "" [@@bs.get]
   let mode: t -> requestMode = fun self  -> decodeRequestMode (mode self)
-  external credentials : t -> string = ""[@@bs.get]
+  external credentials : t -> string = "" [@@bs.get]
   let credentials: t -> requestCredentials = fun self -> decodeRequestCredentials (credentials self)
-  external cache : t -> string = ""[@@bs.get]
+  external cache : t -> string = "" [@@bs.get]
   let cache: t -> requestCache = fun self -> decodeRequestCache (cache self)
-  external redirect : t -> string = ""[@@bs.get]
+  external redirect : t -> string = "" [@@bs.get]
   let redirect: t -> requestRedirect = fun self -> decodeRequestRedirect (redirect self)
-  external integrity : t -> string = ""[@@bs.get]
-  external keepalive : t -> bool = ""[@@bs.get]
+  external integrity : t -> string = "" [@@bs.get]
+  external keepalive : t -> bool = "" [@@bs.get]
 
   include Body.Impl(struct type t = body end)
 end
@@ -351,7 +354,7 @@ module Response = struct
   external redirected : t -> bool = "" [@@bs.get]
   external status : t -> int = "" [@@bs.get]
   external statusText : t -> string = "" [@@bs.get]
-  external type_ : t -> string = "type" [@@bs.get]
+  external _type : t -> string = "" [@@bs.get]
   external url : t -> string = "" [@@bs.get]
   external clone : t = "" [@@bs.send.pipe: t]
 
