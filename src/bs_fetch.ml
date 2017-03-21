@@ -261,7 +261,8 @@ module Body = struct
     external text : (string, unit) Js.promise = "" [@@bs.send.pipe: T.t]
   end
 
-  include Impl(struct type t = body end)
+  type t = body
+  include Impl(struct type nonrec t = t end)
 end
 
 module RequestInit = struct
@@ -313,6 +314,8 @@ end
 module Request = struct
   type t = request
 
+  include Body.Impl(struct type nonrec t = t end)
+
   external make : string -> t = "Request" [@@bs.new]
   external makeWithInit : string -> requestInit -> t = "Request" [@@bs.new]
   external makeWithRequest : t -> t = "Request" [@@bs.new]
@@ -339,12 +342,12 @@ module Request = struct
   let redirect: t -> requestRedirect = fun self -> decodeRequestRedirect (redirect self)
   external integrity : t -> string = "" [@@bs.get]
   external keepalive : t -> bool = "" [@@bs.get]
-
-  include Body.Impl(struct type t = body end)
 end
 
 module Response = struct
   type t = response
+
+  include Body.Impl(struct type nonrec t = t end)
 
   external error : unit -> t = "" [@@bs.val]
   external redirect : string -> t = "" [@@bs.val]
@@ -358,8 +361,6 @@ module Response = struct
   external url : t -> string = "" [@@bs.get]
 
   external clone : t = "" [@@bs.send.pipe: t]
-
-  include Body.Impl(struct type t = response end)
 end
 
 external fetch : string -> (response, unit) Js.promise = "" [@@bs.val]
