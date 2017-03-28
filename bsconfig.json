@@ -1,5 +1,5 @@
 {
-  "name" : "bs-promise",
+  "name" : "bs-fetch",
   "sources": [{
     "dir": "src",
     "public": "all"
