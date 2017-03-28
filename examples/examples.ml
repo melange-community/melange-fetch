@@ -32,9 +32,9 @@ let _ =
     fetch "/api/fruit"
     (* assume server returns `["apple", "banana", "pear", ...]` *)
     |> andThen Response.json
-    |> then_ Js.Json.arrayOfJSON
+    |> then_ Js.Json.decodeArray
     |> then_ Option.unwrapUnsafely
     |> then_ (Js.Array.map
         (fun item ->
-          item |> Js.Json.stringOfJSON |> Option.unwrapUnsafely))
+          item |> Js.Json.decodeString |> Option.unwrapUnsafely))
   )
