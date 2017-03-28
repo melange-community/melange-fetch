@@ -273,7 +273,7 @@ module RequestInit = struct
   | None  -> None
 
   external make :
-    ?method_:string ->
+    ?_method:string ->
     ?headers:headersInit ->
     ?body:bodyInit ->
     ?referrer:string ->
@@ -298,7 +298,7 @@ module RequestInit = struct
     ?integrity:(integrity: string = "") 
     ?keepalive:(keepalive: bool option)
     = make
-        ?method_: (map encodeRequestMethod method_)
+        ?_method: (map encodeRequestMethod method_)
         ?headers
         ?body
         ?referrer
