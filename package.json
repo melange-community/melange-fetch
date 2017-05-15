@@ -6,7 +6,7 @@
     "start": "bsb -make-world -w",
     "build": "bsb -make-world",
     "clean": "bsb -clean-world",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run build"
   },
   "repository": {
     "type": "git",
