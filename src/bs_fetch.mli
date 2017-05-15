@@ -127,11 +127,11 @@ module Body : sig
   external body : t -> readableStream = "" [@@bs.get]
   external bodyUsed : t -> bool = "" [@@bs.get]
 
-  external arrayBuffer : (arrayBuffer, unit) Js.promise = "" [@@bs.send.pipe: t]
-  external blob : (blob, unit) Js.promise = "" [@@bs.send.pipe: t]
-  external formData : (formData, unit) Js.promise = "" [@@bs.send.pipe: t]
-  external json : (Js.Json.t, unit) Js.promise = "" [@@bs.send.pipe: t]
-  external text : (string, unit) Js.promise = "" [@@bs.send.pipe: t]
+  external arrayBuffer : arrayBuffer Js.Promise.t = "" [@@bs.send.pipe: t]
+  external blob : blob Js.Promise.t = "" [@@bs.send.pipe: t]
+  external formData : formData Js.Promise.t = "" [@@bs.send.pipe: t]
+  external json : Js.Json.t Js.Promise.t = "" [@@bs.send.pipe: t]
+  external text : string Js.Promise.t = "" [@@bs.send.pipe: t]
 end
 
 module RequestInit : sig
@@ -178,11 +178,11 @@ module Request : sig
   external body : t -> readableStream = "" [@@bs.get]
   external bodyUsed : t -> bool = "" [@@bs.get]
 
-  external arrayBuffer : (arrayBuffer, unit) Js.promise = "" [@@bs.send.pipe: t]
-  external blob : (blob, unit) Js.promise = "" [@@bs.send.pipe: t]
-  external formData : (formData, unit) Js.promise = "" [@@bs.send.pipe: t]
-  external json : (Js.Json.t, unit) Js.promise = "" [@@bs.send.pipe: t]
-  external text : (string, unit) Js.promise = "" [@@bs.send.pipe: t]
+  external arrayBuffer : arrayBuffer Js.Promise.t = "" [@@bs.send.pipe: t]
+  external blob : blob Js.Promise.t = "" [@@bs.send.pipe: t]
+  external formData : formData Js.Promise.t = "" [@@bs.send.pipe: t]
+  external json : Js.Json.t Js.Promise.t = "" [@@bs.send.pipe: t]
+  external text : string Js.Promise.t = "" [@@bs.send.pipe: t]
 end
 
 module Response : sig
@@ -205,14 +205,14 @@ module Response : sig
   external body : t -> readableStream = "" [@@bs.get]
   external bodyUsed : t -> bool = "" [@@bs.get]
 
-  external arrayBuffer : (arrayBuffer, unit) Js.promise = "" [@@bs.send.pipe: t]
-  external blob : (blob, unit) Js.promise = "" [@@bs.send.pipe: t]
-  external formData : (formData, unit) Js.promise = "" [@@bs.send.pipe: t]
-  external json : (Js.Json.t, unit) Js.promise = "" [@@bs.send.pipe: t]
-  external text : (string, unit) Js.promise = "" [@@bs.send.pipe: t]
+  external arrayBuffer : arrayBuffer Js.Promise.t = "" [@@bs.send.pipe: t]
+  external blob : blob Js.Promise.t = "" [@@bs.send.pipe: t]
+  external formData : formData Js.Promise.t = "" [@@bs.send.pipe: t]
+  external json : Js.Json.t Js.Promise.t = "" [@@bs.send.pipe: t]
+  external text : string Js.Promise.t = "" [@@bs.send.pipe: t]
 end
 
-external fetch : string -> (response, unit) Js.promise = "" [@@bs.val]
-external fetchWithInit : string -> requestInit -> (response, unit) Js.promise = "fetch" [@@bs.val]
-external fetchWithRequest : request -> (response, unit) Js.promise = "fetch" [@@bs.val]
-external fetchWithRequestInit : request -> requestInit -> (response, unit) Js.promise = "fetch" [@@bs.val]
+external fetch : string -> response Js.Promise.t = "" [@@bs.val]
+external fetchWithInit : string -> requestInit -> response Js.Promise.t = "fetch" [@@bs.val]
+external fetchWithRequest : request -> response Js.Promise.t = "fetch" [@@bs.val]
+external fetchWithRequestInit : request -> requestInit -> response Js.Promise.t = "fetch" [@@bs.val]

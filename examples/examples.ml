@@ -1,12 +1,5 @@
 open Bs_fetch
 
-module Promise = struct
-  type ('a, 'e) t = ('a, 'e) Js.promise
-
-  external andThen : ('a -> ('b, 'f) t) -> ('b, 'f) t = "then" [@@bs.send.pipe: ('a, 'e) t]
-  external then_ : ('a -> 'b) -> ('b, 'f) t = "then" [@@bs.send.pipe: ('a, 'e) t]
-end
-
 module Option = struct
   let unwrapUnsafely = function
     | Some v -> v
@@ -14,27 +7,29 @@ module Option = struct
 end
 
 let _ =
-  Promise.(
+  Js.Promise.(
     fetch "/api/hellos/1"
-    |> andThen Response.text
-    |> then_ print_endline
+    |> then_ Response.text
+    |> then_ (fun text -> print_endline text |> resolve)
   )
 
 let _ =
-  Promise.(
+  Js.Promise.(
     fetchWithInit "/api/hello" (RequestInit.make ~method_:Post ())
-    |> andThen Response.text
-    |> then_ print_endline
+    |> then_ Response.text
+    |> then_ (fun text -> print_endline text |> resolve)
   )
 
 let _ =
-  Promise.(
+  Js.Promise.(
     fetch "/api/fruit"
     (* assume server returns `["apple", "banana", "pear", ...]` *)
-    |> andThen Response.json
-    |> then_ Js.Json.decodeArray
-    |> then_ Option.unwrapUnsafely
-    |> then_ (Js.Array.map
-        (fun item ->
-          item |> Js.Json.decodeString |> Option.unwrapUnsafely))
+    |> then_ Response.json
+    |> then_ (fun json -> Js.Json.decodeArray json |> resolve)
+    |> then_ (fun opt -> Option.unwrapUnsafely opt |> resolve)
+    |> then_ (fun items ->
+        items |> Js.Array.map (fun item ->
+                    item |> Js.Json.decodeString
+                         |> Option.unwrapUnsafely)
+              |> resolve)
   )
