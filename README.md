@@ -1,5 +1,24 @@
 # Bindings to fetch for [BuckleScript](https://github.com/BuckleTypes/bs-promise).
 
+##
+
+```ml
+let _ =
+  Js.Promise.(
+    fetch "/api/hellos/1"
+    |> then_ Response.text
+    |> then_ (fun text -> print_endline text |> resolve)
+  )
+```
+
+```reason
+Js.Promise.(
+  fetch "/api/hellos/1"
+  |> then_ Response.text
+  |> then_ (fun text => print_endline text |> resolve)
+);
+```
+
 ## Installation
 
 ```sh
