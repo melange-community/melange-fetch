@@ -3,6 +3,7 @@
 ## Example
 
 ```ml
+(* OCaml *)
 let _ =
   Js.Promise.(
     fetch "/api/hellos/1"
@@ -12,6 +13,7 @@ let _ =
 ```
 
 ```reason
+/* Reason */
 Js.Promise.(
   fetch "/api/hellos/1"
   |> then_ Response.text
