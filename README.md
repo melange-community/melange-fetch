@@ -1,6 +1,6 @@
 # Bindings to fetch for [BuckleScript](https://github.com/BuckleTypes/bs-promise).
 
-##
+## Example
 
 ```ml
 let _ =
