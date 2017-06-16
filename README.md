@@ -1,4 +1,4 @@
-# Bindings to fetch for [BuckleScript](https://github.com/BuckleTypes/bs-promise).
+# Bindings to fetch for [BuckleScript](https://github.com/bucklescript/bucklescript).
 
 ## Example
 
