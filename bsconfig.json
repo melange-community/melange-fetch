@@ -1,5 +1,6 @@
 {
   "name" : "bs-fetch",
+  "bsc-flags": ["-bs-no-version-header"],  
   "sources": [{
     "dir": "src",
     "public": "all"
