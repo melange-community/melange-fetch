@@ -25,6 +25,6 @@
   },
   "homepage": "https://github.com/BuckleTypes/bs-fetch#readme",
   "devDependencies": {
-    "bs-platform": "github:bloomberg/bucklescript"
+    "bs-platform": "^1.8.2"
   }
 }
