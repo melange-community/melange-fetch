@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BuckleTypes/bs-fetch.git"
+    "url": "git+https://github.com/reasonml-community/bs-fetch.git"
   },
   "keywords": [
     "fetch",
@@ -21,9 +21,9 @@
   "author": "glennsl",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/BuckleTypes/bs-fetch/issues"
+    "url": "https://github.com/reasonml-community/bs-fetch/issues"
   },
-  "homepage": "https://github.com/BuckleTypes/bs-fetch#readme",
+  "homepage": "https://github.com/reasonml-community/bs-fetch#readme",
   "devDependencies": {
     "bs-platform": "^1.8.2"
   }
