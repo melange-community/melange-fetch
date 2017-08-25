@@ -1,11 +1,14 @@
 {
-  "name" : "bs-fetch",
-  "bsc-flags": ["-bs-no-version-header"],  
-  "sources": [{
-    "dir": "src",
-    "public": "all"
-  }, {
-    "dir": "examples",
-    "type": "dev"
-  }]
+  "name": "bs-fetch",
+  "bsc-flags": ["-bs-no-version-header", "-bs-super-errors"],
+  "sources": [
+    {
+      "dir": "src",
+      "public": "all"
+    },
+    {
+      "dir": "examples",
+      "type": "dev"
+    }
+  ]
 }
