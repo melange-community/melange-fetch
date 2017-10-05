@@ -37,3 +37,8 @@ Then add `bs-fetch` to `bs-dependencies` in your `bsconfig.json`:
 
 ## Usage
 See usage examples in [`examples/examples.ml`](https://github.com/reasonml-community/bs-fetch/blob/master/examples/examples.ml). The source is a [single file](https://github.com/reasonml-community/bs-fetch/blob/master/src/bs_fetch.ml)!
+
+## Changes
+
+### 0.2.0
+* Rename `Bs_fetch` module to `Fetch`. `Bs_fetch` is kept around as an alias for backwards compatibility, but should be considered deprecated.

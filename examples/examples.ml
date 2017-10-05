@@ -1,5 +1,3 @@
-open Bs_fetch
-
 module Option = struct
   let unwrapUnsafely = function
     | Some v -> v
@@ -8,23 +6,23 @@ end
 
 let _ =
   Js.Promise.(
-    fetch "/api/hellos/1"
-    |> then_ Response.text
+    Fetch.fetch "/api/hellos/1"
+    |> then_ Fetch.Response.text
     |> then_ (fun text -> print_endline text |> resolve)
   )
 
 let _ =
   Js.Promise.(
-    fetchWithInit "/api/hello" (RequestInit.make ~method_:Post ())
-    |> then_ Response.text
+    Fetch.fetchWithInit "/api/hello" (Fetch.RequestInit.make ~method_:Post ())
+    |> then_ Fetch.Response.text
     |> then_ (fun text -> print_endline text |> resolve)
   )
 
 let _ =
   Js.Promise.(
-    fetch "/api/fruit"
+    Fetch.fetch "/api/fruit"
     (* assume server returns `["apple", "banana", "pear", ...]` *)
-    |> then_ Response.json
+    |> then_ Fetch.Response.json
     |> then_ (fun json -> Js.Json.decodeArray json |> resolve)
     |> then_ (fun opt -> Option.unwrapUnsafely opt |> resolve)
     |> then_ (fun items ->
