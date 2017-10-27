@@ -1,4 +1,6 @@
-# Bindings to fetch for [BuckleScript](https://github.com/bucklescript/bucklescript).
+# bs-fetch
+
+Low-level bindings to fetch for [BuckleScript](https://github.com/bucklescript/bucklescript). `bs-fetch` is intended as a thin layer atop the JS API, upon which more high-level and idiomatic libraries can be made. Once such a library has been established, these bindings will likely be refactored to be even thinner.
 
 ## Example
 
