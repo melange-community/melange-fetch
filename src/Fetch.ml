@@ -172,7 +172,7 @@ let decodeRequestCredentials = (* internal *)
   function
   | "omit" -> Omit
   | "same-origin" -> SameOrigin
-  | "imclude" -> Include
+  | "include" -> Include
   | e -> raise (Failure ("Unknown requestCredentials: " ^ e))
 
 type requestCache =
