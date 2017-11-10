@@ -14,207 +14,103 @@ type formData (* XMLHttpRequest *)
 type readableStream (* Streams *)
 type urlSearchParams (* URL *)
 
-type requestMethod =
-  | Get
-  | Head
-  | Post
-  | Put
-  | Delete
-  | Connect
-  | Options
-  | Trace
-  | Patch
-  | Other of string
-let encodeRequestMethod = (* internal *)
-  function
-  | Get  -> "GET"
-  | Head  -> "HEAD"
-  | Post  -> "POST"
-  | Put  -> "PUT"
-  | Delete  -> "DELETE"
-  | Connect  -> "CONNECT"
-  | Options  -> "OPTIONS"
-  | Trace  -> "TRACE"
-  | Patch  -> "PATCH"
-  | Other method_ -> method_
-let decodeRequestMethod = (* internal *)
-  function
-  | "GET" -> Get
-  | "HEAD" -> Head
-  | "POST" -> Post
-  | "PUT" -> Put
-  | "DELETE" -> Delete
-  | "CONNECT" -> Connect
-  | "OPTIONS" -> Options
-  | "TRACE" -> Trace
-  | "PATCH" -> Patch
-  | method_ -> Other method_
+module Method = struct
+  type t = string
 
-type referrerPolicy =
-  | None
-  | NoReferrer
-  | NoReferrerWhenDowngrade
-  | SameOrigin
-  | Origin
-  | StrictOrigin
-  | OriginWhenCrossOrigin
-  | StrictOriginWhenCrossOrigin
-  | UnsafeUrl
-let encodeReferrerPolicy = (* internal *)
-  function
-  | None  -> ""
-  | NoReferrer  -> "no-referrer"
-  | NoReferrerWhenDowngrade  -> "no-referrer-when-downgrade"
-  | SameOrigin  -> "same-origin"
-  | Origin  -> "origin"
-  | StrictOrigin  -> "strict-origin"
-  | OriginWhenCrossOrigin  -> "origin-when-cross-origin"
-  | StrictOriginWhenCrossOrigin  -> "strict-origin-when-cross-origin"
-  | UnsafeUrl  -> "unsafe-url"
-let decodeReferrerPolicy = (* internal *)
-  function
-  | "" -> None
-  | "no-referrer" -> NoReferrer
-  | "no-referrer-when-downgrade" -> NoReferrerWhenDowngrade
-  | "same-origin" -> SameOrigin
-  | "origin" -> Origin
-  | "strict-origin" -> StrictOrigin
-  | "origin-when-cross-origin" -> OriginWhenCrossOrigin
-  | "strict-origin-when-cross-origin" -> StrictOriginWhenCrossOrigin
-  | "unsafe-url" -> UnsafeUrl
-  | e -> raise (Failure ("Unknown referrerPolicy: " ^ e))
+  let get = "GET"
+  let head = "HEAD"
+  let post = "POST"
+  let put = "PUT"
+  let delete = "DELETE"
+  let connect = "CONNECT"
+  let options = "OPTIONS"
+  let trace = "TRACE"
+  let patch = "PATCH"
+  let other m = m
+end
 
-type requestType =
-  | None (* default? unknown? just empty string in spec *)
-  | Audio
-  | Font
-  | Image
-  | Script
-  | Style
-  | Track
-  | Video
-let decodeRequestType = (* internal *)
-  function
-  | "" -> None
-  | "audio" -> Audio
-  | "font" -> Font
-  | "image" -> Image
-  | "script" -> Script
-  | "style" -> Style
-  | "track" -> Track
-  | "video" -> Video
-  | e -> raise (Failure ("Unknown requestType: " ^ e))
+module ReferrerPolicy = struct
+  type t = string
 
-type requestDestination =
-  | None (* default? unknown? just empty string in spec *)
-  | Document
-  | Embed
-  | Font
-  | Image
-  | Manifest
-  | Media
-  | Object
-  | Report
-  | Script
-  | ServiceWorker
-  | SharedWorker
-  | Style
-  | Worker
-  | Xslt
-let decodeRequestDestination = (* internal *)
-  function
-  | "" -> None
-  | "document" -> Document
-  | "embed" -> Embed
-  | "font" -> Font
-  | "image" -> Image
-  | "manifest" -> Manifest
-  | "media" -> Media
-  | "object" -> Object
-  | "report" -> Report
-  | "script" -> Script
-  | "serviceworker" -> ServiceWorker
-  | "sharedworder" -> SharedWorker
-  | "style" -> Style
-  | "worker" -> Worker
-  | "xslt" -> Xslt
-  | e -> raise (Failure ("Unknown requestDestination: " ^ e))
+  let none = ""
+  let noReferrer = "no-referrer"
+  let noReferrerWhenDowngrade = "no-referrer-when-downgrade"
+  let sameOrigin = "same-origin"
+  let origin = "origin"
+  let strictOrigin = "strict-origin"
+  let originWhenCrossOrigin = "origin-when-cross-origin"
+  let strictOriginWhenCrossOrigin = "strict-origin-when-cross-origin"
+  let unsafeUrl = "unsafe-url"
+end
 
-type requestMode =
-  | Navigate
-  | SameOrigin
-  | NoCORS
-  | CORS
-let encodeRequestMode = (* internal *)
-  function
-  | Navigate  -> "navigate"
-  | SameOrigin  -> "same-origin"
-  | NoCORS  -> "no-cors"
-  | CORS  -> "cors"
-let decodeRequestMode = (* internaø *)
-  function
-  | "navigate" -> Navigate
-  | "same-origin" -> SameOrigin
-  | "no-cors" -> NoCORS
-  | "cors" -> CORS
-  | e -> raise (Failure ("Unknown requestMode: " ^ e))
+module RequestType = struct
+  type t = string
 
-type requestCredentials =
-  | Omit
-  | SameOrigin
-  | Include
-let encodeRequestCredentials = (* internal *)
-  function
-  | Omit  -> "omit"
-  | SameOrigin  -> "same-origin"
-  | Include  -> "include"
-let decodeRequestCredentials = (* internal *)
-  function
-  | "omit" -> Omit
-  | "same-origin" -> SameOrigin
-  | "imclude" -> Include
-  | e -> raise (Failure ("Unknown requestCredentials: " ^ e))
+  let none = ""
+  let audio = "audio"
+  let font = "font"
+  let image = "image"
+  let script = "script"
+  let style = "style"
+  let track = "track"
+  let video = "video"
+end
 
-type requestCache =
-  | Default
-  | NoStore
-  | Reload
-  | NoCache
-  | ForceCache
-  | OnlyIfCached
-let encodeRequestCache = (* internal *)
-  function
-  | Default  -> "default"
-  | NoStore  -> "no-store"
-  | Reload  -> "reload"
-  | NoCache  -> "no-cache"
-  | ForceCache  -> "force-cache"
-  | OnlyIfCached  -> "only-if-cached"
-let decodeRequestCache = (* internal *)
-  function
-  | "default" -> Default
-  | "no-store" -> NoStore
-  | "reload" -> Reload
-  | "no-cache" -> NoCache
-  | "force-cache" -> ForceCache
-  | "only-if-cached" -> OnlyIfCached
-  | e -> raise (Failure ("Unknown requestCache: " ^ e))
+module RequestDestination = struct
+  type t = string
 
-type requestRedirect =
-  | Follow
-  | Error
-  | Manual
-let encodeRequestRedirect = (* internal *)
-  function
-  | Follow  -> "follow"
-  | Error  -> "error"
-  | Manual  -> "manual"
-let decodeRequestRedirect = (* internal *)
-  function
-  | "follow" -> Follow
-  | "error" -> Error
-  | "manual" -> Manual
-  | e -> raise (Failure ("Unknown requestRedirect: " ^ e))
+  let none = ""
+  let document = "document"
+  let embed = "embed"
+  let font = "font"
+  let image = "image"
+  let manifest = "manifest"
+  let media = "media"
+  let object_ = "object"
+  let report = "report"
+  let script = "script"
+  let serviceWorker = "serviceworker"
+  let sharedWorker = "sharedworder"
+  let style = "style"
+  let worker = "worker"
+  let xslt = "xslt"
+end
+
+module RequestMode = struct
+  type t = string
+
+  let navigate = "navigate"
+  let sameOrigin = "same-origin"
+  let noCORS = "no-cors"
+  let cors = "cors"
+end
+
+module RequestCredentials = struct
+  type t = string
+
+  let omit = "omit"
+  let sameOrigin  = "same-origin"
+  let include_  = "include"
+end
+
+module RequestCache = struct
+  type t = string
+
+  let default = "default"
+  let noStore = "no-store"
+  let reload = "reload"
+  let noCache = "no-cache"
+  let forceCache = "force-cache"
+  let onlyIfCached = "only-if-cached"
+end
+
+module RequestRedirect = struct
+  type t = string
+
+  let follow = "follow"
+  let error = "error"
+  let manual = "manual"
+end
 
 module HeadersInit = struct
   type t = headersInit
@@ -268,47 +164,19 @@ end
 module RequestInit = struct
   type t = requestInit
 
-  let map f = function (* internal *)
-  | Some v -> Some (f v)
-  | None  -> None
-
   external make :
-    ?_method:string ->
+    ?_method:Method.t ->
     ?headers:headersInit ->
     ?body:bodyInit ->
     ?referrer:string ->
-    ?referrerPolicy:string ->
-    ?mode:string ->
-    ?credentials:string ->
-    ?cache:string ->
-    ?redirect:string ->
+    ?referrerPolicy:ReferrerPolicy.t ->
+    ?mode:RequestMode.t ->
+    ?credentials:RequestCredentials.t ->
+    ?cache:RequestCache.t ->
+    ?redirect:RequestRedirect.t ->
     ?integrity:string ->
     ?keepalive:Js.boolean ->
     unit -> requestInit = "" [@@bs.obj]
-  let make
-    ?method_:(method_: requestMethod option) 
-    ?headers:(headers: headersInit option)
-    ?body:(body: bodyInit option)
-    ?referrer:(referrer: string option) 
-    ?referrerPolicy:(referrerPolicy: referrerPolicy = None) 
-    ?mode:(mode: requestMode option) 
-    ?credentials:(credentials: requestCredentials option) 
-    ?cache:(cache: requestCache option) 
-    ?redirect:(redirect: requestRedirect option) 
-    ?integrity:(integrity: string = "") 
-    ?keepalive:(keepalive: bool option)
-    = make
-        ?_method: (map encodeRequestMethod method_)
-        ?headers
-        ?body
-        ?referrer
-        ~referrerPolicy: (encodeReferrerPolicy referrerPolicy)
-        ?mode: (map encodeRequestMode mode)
-        ?credentials: (map encodeRequestCredentials credentials)
-        ?cache: (map encodeRequestCache cache)
-        ?redirect: (map encodeRequestRedirect redirect)
-        ~integrity
-        ?keepalive: (map Js.Boolean.to_js_boolean keepalive)
 end
 
 module Request = struct
@@ -322,24 +190,17 @@ module Request = struct
   external makeWithRequestInit : t -> requestInit -> t = "Request" [@@bs.new]
 
   external method_ : t -> string = "method" [@@bs.get]
-  let method_: t -> requestMethod = fun self -> decodeRequestMethod (method_ self)
+  (*let method_: t -> requestMethod = fun self -> decodeRequestMethod (method_ self)*)
   external url : t -> string = ""[@@bs.get]
   external headers : t -> headers = "" [@@bs.get]
-  external type_ : t -> string = "type" [@@bs.get]
-  let type_: t -> requestType = fun self -> decodeRequestType (type_ self)
-  external destination : t -> string = "" [@@bs.get]
-  let destination: t -> requestDestination = fun self -> decodeRequestDestination (destination self)
+  external type_ : t -> RequestType.t = "type" [@@bs.get]
+  external destination : t -> RequestDestination.t = "" [@@bs.get]
   external referrer : t -> string = "" [@@bs.get]
-  external referrerPolicy : t -> string = "" [@@bs.get]
-  let referrerPolicy: t -> referrerPolicy = fun self -> decodeReferrerPolicy (referrerPolicy self)
-  external mode : t -> string = "" [@@bs.get]
-  let mode: t -> requestMode = fun self  -> decodeRequestMode (mode self)
-  external credentials : t -> string = "" [@@bs.get]
-  let credentials: t -> requestCredentials = fun self -> decodeRequestCredentials (credentials self)
-  external cache : t -> string = "" [@@bs.get]
-  let cache: t -> requestCache = fun self -> decodeRequestCache (cache self)
-  external redirect : t -> string = "" [@@bs.get]
-  let redirect: t -> requestRedirect = fun self -> decodeRequestRedirect (redirect self)
+  external referrerPolicy : t -> ReferrerPolicy.t = "" [@@bs.get]
+  external mode : t -> RequestMode.t = "" [@@bs.get]
+  external credentials : t -> RequestCredentials.t = "" [@@bs.get]
+  external cache : t -> RequestCache.t = "" [@@bs.get]
+  external redirect : t -> RequestRedirect.t = "" [@@bs.get]
   external integrity : t -> string = "" [@@bs.get]
   external keepalive : t -> bool = "" [@@bs.get]
 end

@@ -14,79 +14,103 @@ type formData (* XMLHttpRequest *)
 type readableStream (* Streams *)
 type urlSearchParams (* URL *)
 
-type requestMethod =
-  | Get
-  | Head
-  | Post
-  | Put
-  | Delete
-  | Connect
-  | Options
-  | Trace
-  | Patch
-  | Other of string
+module Method : sig
+  type t = string
 
-type referrerPolicy =
-  | None
-  | NoReferrer
-  | NoReferrerWhenDowngrade
-  | SameOrigin
-  | Origin
-  | StrictOrigin
-  | OriginWhenCrossOrigin
-  | StrictOriginWhenCrossOrigin
-  | UnsafeUrl
+  val get : t
+  val head : t
+  val post : t
+  val put : t
+  val delete : t
+  val connect : t
+  val options : t
+  val trace : t
+  val patch : t
+  val other : string -> t
+end
 
-type requestType =
-  | None (* default? unknown? just empty string in spec *)
-  | Audio
-  | Font
-  | Image
-  | Script
-  | Style
-  | Track
-  | Video
+module ReferrerPolicy : sig
+  type t = string
 
-type requestDestination =
-  | None (* default? unknown? just empty string in spec *)
-  | Document
-  | Embed
-  | Font
-  | Image
-  | Manifest
-  | Media
-  | Object
-  | Report
-  | Script
-  | ServiceWorker
-  | SharedWorker
-  | Style
-  | Worker
-  | Xslt
+  val none : t
+  val noReferrer : t
+  val noReferrerWhenDowngrade : t
+  val sameOrigin : t
+  val origin : t
+  val strictOrigin : t
+  val originWhenCrossOrigin : t
+  val strictOriginWhenCrossOrigin : t
+  val unsafeUrl : t
+end
 
-type requestMode =
-  | Navigate
-  | SameOrigin
-  | NoCORS
-  | CORS
+module RequestType : sig
+  type t = string
 
-type requestCredentials =
-  | Omit
-  | SameOrigin
-  | Include
+  val none : t
+  val audio : t
+  val font : t
+  val image : t
+  val script : t
+  val style : t
+  val track : t
+  val video : t
+end
 
-type requestCache =
-  | Default
-  | NoStore
-  | Reload
-  | NoCache
-  | ForceCache
-  | OnlyIfCached
+module RequestDestination : sig
+  type t = string
 
-type requestRedirect =
-  | Follow
-  | Error
-  | Manual
+  val none : t
+  val document : t
+  val embed : t
+  val font : t
+  val image : t
+  val manifest : t
+  val media : t
+  val object_ : t
+  val report : t
+  val script : t
+  val serviceWorker : t
+  val sharedWorker : t
+  val style : t
+  val worker : t
+  val xslt : t
+end
+
+module RequestMode : sig
+  type t = string
+
+  val navigate : t
+  val sameOrigin : t
+  val noCORS : t
+  val cors : t
+end
+
+module RequestCredentials : sig
+  type t = string
+
+  val omit : t
+  val sameOrigin  : t
+  val include_  : t
+end
+
+module RequestCache : sig
+  type t = string
+
+  val default : t
+  val noStore : t
+  val reload : t
+  val noCache : t
+  val forceCache : t
+  val onlyIfCached : t
+end
+
+module RequestRedirect : sig
+  type t = string
+
+  val follow : t
+  val error : t
+  val manual : t
+end
 
 module HeadersInit : sig
   type t = headersInit
@@ -138,17 +162,17 @@ module RequestInit : sig
   type t = requestInit
 
   val make :
-    ?method_:requestMethod ->
+    ?_method:Method.t ->
     ?headers:headersInit ->
     ?body:bodyInit ->
     ?referrer:string ->
-    ?referrerPolicy:referrerPolicy ->
-    ?mode:requestMode ->
-    ?credentials:requestCredentials ->
-    ?cache:requestCache ->
-    ?redirect:requestRedirect ->
+    ?referrerPolicy:ReferrerPolicy.t ->
+    ?mode:RequestMode.t ->
+    ?credentials:RequestCredentials.t ->
+    ?cache:RequestCache.t ->
+    ?redirect:RequestRedirect.t ->
     ?integrity:string ->
-    ?keepalive:bool ->
+    ?keepalive:Js.boolean ->
     unit -> t
 end
 
@@ -160,17 +184,17 @@ module Request : sig
   external makeWithRequest : t -> t = "Request" [@@bs.new]
   external makeWithRequestInit : t -> requestInit -> t = "Request" [@@bs.new]
 
-  val method_: t -> requestMethod
+  val method_: t -> Method.t
   external url : t -> string = ""[@@bs.get]
   external headers : t -> headers = "" [@@bs.get]
-  val type_: t -> requestType
-  val destination: t -> requestDestination
+  val type_: t -> RequestType.t
+  val destination: t -> RequestDestination.t
   external referrer : t -> string = "" [@@bs.get]
-  val referrerPolicy: t -> referrerPolicy
-  val mode: t -> requestMode
-  val credentials: t -> requestCredentials
-  val cache: t -> requestCache
-  val redirect: t -> requestRedirect
+  val referrerPolicy: t -> ReferrerPolicy.t
+  val mode: t -> RequestMode.t
+  val credentials: t -> RequestCredentials.t
+  val cache: t -> RequestCache.t
+  val redirect: t -> RequestRedirect.t
   external integrity : t -> string = "" [@@bs.get]
   external keepalive : t -> bool = "" [@@bs.get]
 
