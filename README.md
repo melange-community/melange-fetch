@@ -17,9 +17,9 @@ let _ =
 ```reason
 /* Reason */
 Js.Promise.(
-  fetch "/api/hellos/1"
-  |> then_ Response.text
-  |> then_ (fun text => print_endline text |> resolve)
+  Fetch.fetch("/api/hellos/1")
+  |> then_(Fetch.Response.text)
+  |> then_((text) => print_endline(text) |> resolve)
 );
 ```
 
