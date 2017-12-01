@@ -8,8 +8,8 @@ Low-level bindings to fetch for [BuckleScript](https://github.com/bucklescript/b
 (* OCaml *)
 let _ =
   Js.Promise.(
-    fetch "/api/hellos/1"
-    |> then_ Response.text
+    Fetch.fetch "/api/hellos/1"
+    |> then_ Fetch.Response.text
     |> then_ (fun text -> print_endline text |> resolve)
   )
 ```
@@ -19,7 +19,7 @@ let _ =
 Js.Promise.(
   Fetch.fetch("/api/hellos/1")
   |> then_(Fetch.Response.text)
-  |> then_((text) => print_endline(text) |> resolve)
+  |> then_(text => print_endline(text) |> resolve)
 );
 ```
 
