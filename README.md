@@ -40,6 +40,10 @@ Then add `bs-fetch` to `bs-dependencies` in your `bsconfig.json`:
 ## Usage
 See usage examples in [`ocaml_examples.ml`](https://github.com/reasonml-community/bs-fetch/blob/master/examples/ocaml_examples.ml) and [`reason_examples.re`](https://github.com/reasonml-community/bs-fetch/blob/master/examples/reason_examples.re). The source is a [single file](https://github.com/reasonml-community/bs-fetch/blob/master/src/Fetch.ml)!
 
+## Node.js polyfill
+
+`fetch` is a Web API that isn't available out-of-the-box in Node.js, and will therefore need to be polyfilled. [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch) one such polyfill that seems to work well. Just install it via npm and add `[%raw "require('isomorphic-fetch')"]` to the top of your main file, but be aware that there are some subtle differences and even parts that are missing entirely. 
+
 ## Changes
 
 ### 0.2.0
