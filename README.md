@@ -1,6 +1,13 @@
 # bs-fetch
 
-Low-level bindings to fetch for [BuckleScript](https://github.com/bucklescript/bucklescript). `bs-fetch` is intended as a thin layer atop the JS API, upon which more high-level and idiomatic libraries can be made. Once such a library has been established, these bindings will likely be refactored to be even thinner.
+Low-level bindings to fetch for [BuckleScript](https://github.com/bucklescript/bucklescript).
+
+[![npm](https://img.shields.io/npm/v/bs-fetch.svg)](https://npmjs.org/bs-fetch)
+[![Issues](https://img.shields.io/github/issues/reasonml-community/bs-fetch.svg)](https://github.com/reasonml-community/bs-fetch/issues)
+[![Last Commit](https://img.shields.io/github/last-commit/reasonml-community/bs-fetch.svg)]()
+[![Size](https://img.shields.io/github/size/reasonml-community/bs-fetch/lib/js/src/Fetch.js.svg)]()
+
+`bs-fetch` is intended as a thin layer atop the JS API, upon which more high-level and idiomatic libraries can be made. Once such a library has been established, these bindings will likely be refactored to be even thinner.
 
 ## Example
 
