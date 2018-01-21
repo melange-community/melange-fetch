@@ -11,18 +11,7 @@ Low-level bindings to fetch for [BuckleScript](https://github.com/bucklescript/b
 
 ## Example
 
-```ml
-(* OCaml *)
-let _ =
-  Js.Promise.(
-    Fetch.fetch "/api/hellos/1"
-    |> then_ Fetch.Response.text
-    |> then_ (fun text -> print_endline text |> resolve)
-  )
-```
-
 ```reason
-/* Reason */
 Js.Promise.(
   Fetch.fetch("/api/hellos/1")
   |> then_(Fetch.Response.text)
