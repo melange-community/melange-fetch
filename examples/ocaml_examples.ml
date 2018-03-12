@@ -31,3 +31,15 @@ let _ =
                          |> Option.unwrapUnsafely)
               |> resolve)
   )
+
+let _ =
+  let payload = Js.Dict.empty () in
+  Js.Dict.set payload "hello" (Js.Json.string "world");
+  let open Js.Promise in
+    (Fetch.fetchWithInit "/api/hello"
+       (Fetch.RequestInit.make ~method_:Post
+          ~body:(Fetch.BodyInit.make
+                   (Js.Json.stringify (Js.Json.object_ payload)))
+          ~headers:(Fetch.HeadersInit.make
+                      ([%bs.obj { Content-Type = "application/json" }])) ()))
+      |> (then_ Fetch.Response.json)
