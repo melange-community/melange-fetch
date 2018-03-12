@@ -34,3 +34,21 @@ let _ =
            |> resolve
        )
   );
+
+/* makes a post request with the following json payload { hello: "world" } */
+let _ = {
+  let payload = Js.Dict.empty();
+  Js.Dict.set(payload, "hello", Js.Json.string("world"));
+  Js.Promise.(
+    Fetch.fetchWithInit(
+      "/api/hello",
+      Fetch.RequestInit.make(
+        ~method_=Post,
+        ~body=Fetch.BodyInit.make(Js.Json.stringify(Js.Json.object_(payload))),
+        ~headers=Fetch.HeadersInit.make({"Content-Type": "application/json"}),
+        ()
+      )
+    )
+    |> then_(Fetch.Response.json)
+  );
+};
