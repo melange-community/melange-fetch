@@ -384,11 +384,12 @@ module FormData = struct
 
   external make : unit -> t = "FormData" [@@bs.new]
 
-  external appendObject : string -> < .. > Js.t -> unit = "append" [@@bs.send.pipe : t]
-  external appendString : string -> string -> unit = "append" [@@bs.send.pipe : t]
-  external delete : string -> unit = "delete" [@@bs.send.pipe : t]
-  external setObject : string -> < .. > Js.t -> unit = "set" [@@bs.send.pipe : t]
-  external setString : string -> string -> unit = "set" [@@bs.send.pipe : t]
+  external mutableAppendObject : string -> < .. > Js.t -> unit = "append" [@@bs.send.pipe : t]
+
+  external mutableAppendString : string -> string -> unit = "append" [@@bs.send.pipe : t]
+  external mutableDelete : string -> unit = "delete" [@@bs.send.pipe : t]
+  external mutableSetObject : string -> < .. > Js.t -> unit = "set" [@@bs.send.pipe : t]
+  external mutableSetString : string -> string -> unit = "set" [@@bs.send.pipe : t]
 end
 
 
