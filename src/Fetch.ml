@@ -379,6 +379,18 @@ module Response = struct
   external clone : t = "clone" [@@bs.send.pipe: t]
 end
 
+module FormData = struct 
+  type t = formData
+
+  external make : unit -> t = "FormData" [@@bs.new]
+
+  external appendObject : string -> < .. > Js.t -> unit = "append" [@@bs.send.pipe : t]
+  external appendString : string -> string -> unit = "append" [@@bs.send.pipe : t]
+  external delete : string -> unit = "delete" [@@bs.send.pipe : t]
+  external setObject : string -> < .. > Js.t -> unit = "set" [@@bs.send.pipe : t]
+  external setString : string -> string -> unit = "set" [@@bs.send.pipe : t]
+end
+
 
 external fetch : string -> response Js.Promise.t = "fetch" [@@bs.val]
 external fetchWithInit : string -> requestInit -> response Js.Promise.t = "fetch" [@@bs.val]
