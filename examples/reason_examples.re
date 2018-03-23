@@ -52,3 +52,23 @@ let _ = {
     |> then_(Fetch.Response.json)
   );
 };
+
+let _ = {
+  let formData = Fetch.FormData.make();
+
+  formData |> Fetch.FormData.appendObject("image0", {"type": "image/jpg", "uri": "path/to/it", "name": "image0.jpg"});
+
+  Js.Promise.(
+    Fetch.fetchWithInit(
+      "/api/upload",
+      Fetch.RequestInit.make(
+        ~method_=Post,
+        ~body=Fetch.BodyInit.makeWithFormData(formData),
+        ~headers=Fetch.HeadersInit.make({"Accept": "*"}),
+        ()
+      )
+    )
+
+    |> then_(Fetch.Response.json)
+  )
+};

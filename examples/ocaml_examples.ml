@@ -41,5 +41,5 @@ let _ =
           ~body:(Fetch.BodyInit.make
                    (Js.Json.stringify (Js.Json.object_ payload)))
           ~headers:(Fetch.HeadersInit.make
-                      ([%bs.obj { Content-Type = "application/json" }])) ()))
+                      ([%bs.obj { contentType = "application/json" }])) ()))
       |> (then_ Fetch.Response.json)
