@@ -379,17 +379,27 @@ module Response = struct
   external clone : t = "clone" [@@bs.send.pipe: t]
 end
 
+(* This belongs to XHR spec and will probably be moved to another repo in the future *)
+
+module Blob = struct
+  type t
+end
+
 module FormData = struct 
   type t = formData
 
   external make : unit -> t = "FormData" [@@bs.new]
 
-  external mutableAppendObject : string -> < .. > Js.t -> unit = "append" [@@bs.send.pipe : t]
+  (* Added for React Native polyfill compatibility *)
+  external appendObject : string -> < .. > Js.t -> unit = "append" [@@bs.send.pipe : t]
+  external appendBlob : string -> Blob.t -> unit = "append" [@@bs.send.pipe : t]
+  external appendString : string -> string -> unit = "append" [@@bs.send.pipe : t]
 
-  external mutableAppendString : string -> string -> unit = "append" [@@bs.send.pipe : t]
-  external mutableDelete : string -> unit = "delete" [@@bs.send.pipe : t]
-  external mutableSetObject : string -> < .. > Js.t -> unit = "set" [@@bs.send.pipe : t]
-  external mutableSetString : string -> string -> unit = "set" [@@bs.send.pipe : t]
+  external delete : string -> unit = "delete" [@@bs.send.pipe : t]
+
+  external setObject : string -> < .. > Js.t -> unit = "set" [@@bs.send.pipe : t]
+  external setBlob : string -> Blob.t -> unit = "set" [@@bs.send.pipe : t]
+  external setString : string -> string -> unit = "set" [@@bs.send.pipe : t]
 end
 
 

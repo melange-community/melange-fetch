@@ -229,17 +229,22 @@ module Response : sig
   external text : string Js.Promise.t = "text" [@@bs.send.pipe: t]
 end
 
+module Blob : sig
+  type t
+end
+
 module FormData : sig
   type t = formData
 
   external make : unit -> t = "FormData" [@@bs.new]
 
-  external mutableAppendObject : string -> < .. > Js.t -> unit = "append" [@@bs.send.pipe : t]
-
-  external mutableAppendString : string -> string -> unit = "append" [@@bs.send.pipe : t]
-  external mutableDelete : string -> unit = "delete" [@@bs.send.pipe : t]
-  external mutableSetObject : string -> < .. > Js.t -> unit = "set" [@@bs.send.pipe : t]
-  external mutableSetString : string -> string -> unit = "set" [@@bs.send.pipe : t]
+  external appendObject : string -> < .. > Js.t -> unit = "append" [@@bs.send.pipe : t]
+  external appendBlob : string -> Blob.t -> unit = "append" [@@bs.send.pipe : t]
+  external appendString : string -> string -> unit = "append" [@@bs.send.pipe : t]
+  external delete : string -> unit = "delete" [@@bs.send.pipe : t]
+  external setObject : string -> < .. > Js.t -> unit = "set" [@@bs.send.pipe : t]
+  external setString : string -> string -> unit = "set" [@@bs.send.pipe : t]
+  external setBlob : string -> Blob.t -> unit = "set" [@@bs.send.pipe : t]
 end
 
 external fetch : string -> response Js.Promise.t = "fetch" [@@bs.val]
