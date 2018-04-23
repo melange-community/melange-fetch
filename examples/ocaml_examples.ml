@@ -27,19 +27,22 @@ let _ =
     |> then_ (fun opt -> Option.unwrapUnsafely opt |> resolve)
     |> then_ (fun items ->
         items |> Js.Array.map (fun item ->
-                    item |> Js.Json.decodeString
-                         |> Option.unwrapUnsafely)
-              |> resolve)
+            item |> Js.Json.decodeString
+            |> Option.unwrapUnsafely)
+        |> resolve)
   )
 
 let _ =
+  let headers = [%bs.raw {|
+    {"Content-type": "application/json"}
+  |}] in
   let payload = Js.Dict.empty () in
   Js.Dict.set payload "hello" (Js.Json.string "world");
   let open Js.Promise in
-    (Fetch.fetchWithInit "/api/hello"
-       (Fetch.RequestInit.make ~method_:Post
-          ~body:(Fetch.BodyInit.make
-                   (Js.Json.stringify (Js.Json.object_ payload)))
-          ~headers:(Fetch.HeadersInit.make
-                      ([%bs.obj { contentType = "application/json" }])) ()))
-      |> (then_ Fetch.Response.json)
+  (Fetch.fetchWithInit "/api/hello"
+     (Fetch.RequestInit.make ~method_:Post
+        ~body:(Fetch.BodyInit.make
+                 (Js.Json.stringify (Js.Json.object_ payload)))
+        ~headers:(Fetch.HeadersInit.make
+                    (headers)) ()))
+  |> (then_ Fetch.Response.json)
