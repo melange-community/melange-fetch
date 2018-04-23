@@ -56,7 +56,7 @@ let _ = {
 let _ = {
   let formData = Fetch.FormData.make();
 
-  formData |> Fetch.FormData.mutableAppendObject("image0", {"type": "image/jpg", "uri": "path/to/it", "name": "image0.jpg"});
+  formData |> Fetch.FormData.appendObject("image0", {"type": "image/jpg", "uri": "path/to/it", "name": "image0.jpg"});
 
   Js.Promise.(
     Fetch.fetchWithInit(
