@@ -13,6 +13,8 @@ type bufferSource (* Web IDL, either an arrayBuffer or arrayBufferView *)
 type formData (* XMLHttpRequest *)
 type readableStream (* Streams *)
 type urlSearchParams (* URL *)
+type abortController
+type signal
 
 type requestMethod =
   | Get
@@ -88,6 +90,14 @@ type requestRedirect =
   | Error
   | Manual
 
+module AbortController : sig
+  type t = abortController
+  
+  external getSignal : t -> signal = "signal" [@@bs.get]
+  external abort : t -> unit = "abort" [@@bs.send]
+  external make : unit -> t = "AbortController" [@@bs.new]
+end
+
 module HeadersInit : sig
   type t = headersInit
 
@@ -149,6 +159,7 @@ module RequestInit : sig
     ?redirect:requestRedirect ->
     ?integrity:string ->
     ?keepalive:bool ->
+    ?signal:signal ->
     unit -> t
 end
 

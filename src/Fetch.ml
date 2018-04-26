@@ -13,6 +13,8 @@ type bufferSource (* Web IDL, either an arrayBuffer or arrayBufferView *)
 type formData (* XMLHttpRequest *)
 type readableStream (* Streams *)
 type urlSearchParams (* URL *)
+type abortController
+type signal
 
 type requestMethod =
   | Get
@@ -216,6 +218,14 @@ let decodeRequestRedirect = (* internal *)
   | "manual" -> Manual
   | e -> raise (Failure ("Unknown requestRedirect: " ^ e))
 
+module AbortController = struct
+  type t = abortController
+  
+  external getSignal : t -> signal = "signal" [@@bs.get]
+  external abort : t -> unit = "abort" [@@bs.send]
+  external make : unit -> t = "AbortController" [@@bs.new]
+end
+
 module HeadersInit = struct
   type t = headersInit
 
@@ -284,6 +294,7 @@ module RequestInit = struct
     ?redirect:string ->
     ?integrity:string ->
     ?keepalive:Js.boolean ->
+    ?signal:signal ->
     unit -> requestInit = "" [@@bs.obj]
   let make
     ?method_:(method_: requestMethod option) 
@@ -297,6 +308,7 @@ module RequestInit = struct
     ?redirect:(redirect: requestRedirect option) 
     ?integrity:(integrity: string = "") 
     ?keepalive:(keepalive: bool option)
+    ?signal:(signal: signal option)
     = make
         ?_method: (map encodeRequestMethod method_)
         ?headers
@@ -309,6 +321,7 @@ module RequestInit = struct
         ?redirect: (map encodeRequestRedirect redirect)
         ~integrity
         ?keepalive: (map Js.Boolean.to_js_boolean keepalive)
+        ?signal
 end
 
 module Request = struct
