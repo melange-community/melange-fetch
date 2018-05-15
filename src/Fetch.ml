@@ -151,7 +151,7 @@ let encodeRequestMode = (* internal *)
   | SameOrigin  -> "same-origin"
   | NoCORS  -> "no-cors"
   | CORS  -> "cors"
-let decodeRequestMode = (* internaø *)
+let decodeRequestMode = (* internal *)
   function
   | "navigate" -> Navigate
   | "same-origin" -> SameOrigin
