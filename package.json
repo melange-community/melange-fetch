@@ -25,6 +25,9 @@
   },
   "homepage": "https://github.com/reasonml-community/bs-fetch#readme",
   "devDependencies": {
-    "bs-platform": "^2.0.0"
+    "bs-platform": "^3.0.0"
+  },
+  "peerDependencies": {
+    "bs-platform": "^3.0.0"
   }
 }
