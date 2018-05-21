@@ -42,5 +42,9 @@ See usage examples in [`ocaml_examples.ml`](https://github.com/reasonml-communit
 
 ## Changes
 
+### 0.3.0
+* Added `HeadersInit.makeWithDict` so as to be able to make headers in OCaml too
+* Require `bs-platform` >= 3.0.0 due to internal dependency on Js.boolean that has now been removed
+
 ### 0.2.0
 * Rename `Bs_fetch` module to `Fetch`. `Bs_fetch` is kept around as an alias for backwards compatibility, but should be considered deprecated.
