@@ -220,6 +220,7 @@ module HeadersInit = struct
   type t = headersInit
 
   external make : < .. > Js.t -> t = "%identity"
+  external makeWithDict : string Js.Dict.t -> t = "%identity"
   external makeWithArray : (string * string) array -> t = "%identity"
 end
 
