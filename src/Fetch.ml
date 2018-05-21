@@ -284,7 +284,7 @@ module RequestInit = struct
     ?cache:string ->
     ?redirect:string ->
     ?integrity:string ->
-    ?keepalive:Js.boolean ->
+    ?keepalive:bool ->
     unit -> requestInit = "" [@@bs.obj]
   let make
     ?method_:(method_: requestMethod option) 
@@ -309,7 +309,7 @@ module RequestInit = struct
         ?cache: (map encodeRequestCache cache)
         ?redirect: (map encodeRequestRedirect redirect)
         ~integrity
-        ?keepalive: (map Js.Boolean.to_js_boolean keepalive)
+        ?keepalive: keepalive
 end
 
 module Request = struct
