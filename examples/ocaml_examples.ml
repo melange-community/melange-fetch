@@ -40,6 +40,6 @@ let _ =
        (Fetch.RequestInit.make ~method_:Post
           ~body:(Fetch.BodyInit.make
                    (Js.Json.stringify (Js.Json.object_ payload)))
-          ~headers:(Fetch.HeadersInit.make
-                      ([%bs.obj { Content-Type = "application/json" }])) ()))
+          ~headers:(Fetch.HeadersInit.makeWithDict (Js.Dict.fromList [
+                     ("Content-Type", "application/json")])) ()))
       |> (then_ Fetch.Response.json)
