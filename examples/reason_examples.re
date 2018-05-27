@@ -1,23 +1,18 @@
-module Option = {
-  let unwrapUnsafely = (data) =>
-    switch data {
-    | Some(v) => v
-    | None => raise(Invalid_argument("unwrapUnsafely called on None"))
-    };
-};
-
 let _ =
   Js.Promise.(
     Fetch.fetch("/api/hellos/1")
     |> then_(Fetch.Response.text)
-    |> then_((text) => print_endline(text) |> resolve)
+    |> then_(text => print_endline(text) |> resolve)
   );
 
 let _ =
   Js.Promise.(
-    Fetch.fetchWithInit("/api/hello", Fetch.RequestInit.make(~method_=Post, ()))
+    Fetch.fetchWithInit(
+      "/api/hello",
+      Fetch.RequestInit.make(~method_=Post, ()),
+    )
     |> then_(Fetch.Response.text)
-    |> then_((text) => print_endline(text) |> resolve)
+    |> then_(text => print_endline(text) |> resolve)
   );
 
 let _ =
@@ -25,13 +20,14 @@ let _ =
     Fetch.fetch("/api/fruit")
     /* assume server returns `["apple", "banana", "pear", ...]` */
     |> then_(Fetch.Response.json)
-    |> then_((json) => Js.Json.decodeArray(json) |> resolve)
-    |> then_((opt) => Option.unwrapUnsafely(opt) |> resolve)
-    |> then_(
-         (items) =>
-           items
-           |> Js.Array.map((item) => item |> Js.Json.decodeString |> Option.unwrapUnsafely)
-           |> resolve
+    |> then_(json => Js.Json.decodeArray(json) |> resolve)
+    |> then_(opt => Belt.Option.getExn(opt) |> resolve)
+    |> then_(items =>
+         items
+         |> Js.Array.map(item =>
+              item |> Js.Json.decodeString |> Belt.Option.getExn
+            )
+         |> resolve
        )
   );
 
@@ -44,10 +40,11 @@ let _ = {
       "/api/hello",
       Fetch.RequestInit.make(
         ~method_=Post,
-        ~body=Fetch.BodyInit.make(Js.Json.stringify(Js.Json.object_(payload))),
+        ~body=
+          Fetch.BodyInit.make(Js.Json.stringify(Js.Json.object_(payload))),
         ~headers=Fetch.HeadersInit.make({"Content-Type": "application/json"}),
-        ()
-      )
+        (),
+      ),
     )
     |> then_(Fetch.Response.json)
   );
