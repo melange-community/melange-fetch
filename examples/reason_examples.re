@@ -24,9 +24,7 @@ let _ =
     |> then_(opt => Belt.Option.getExn(opt) |> resolve)
     |> then_(items =>
          items
-         |> Js.Array.map(item =>
-              item |> Js.Json.decodeString |> Belt.Option.getExn
-            )
+         |> Js.Array.map(item => item |> Js.Json.decodeString |> Belt.Option.getExn)
          |> resolve
        )
   );
@@ -40,11 +38,10 @@ let _ = {
       "/api/hello",
       Fetch.RequestInit.make(
         ~method_=Post,
-        ~body=
-          Fetch.BodyInit.make(Js.Json.stringify(Js.Json.object_(payload))),
+        ~body=Fetch.BodyInit.make(Js.Json.stringify(Js.Json.object_(payload))),
         ~headers=Fetch.HeadersInit.make({"Content-Type": "application/json"}),
-        (),
-      ),
+        ()
+      )
     )
     |> then_(Fetch.Response.json)
   );
