@@ -178,19 +178,19 @@ var Request = [
   Request_007
 ];
 
-exports.Method             = Method;
-exports.ReferrerPolicy     = ReferrerPolicy;
-exports.RequestType        = RequestType;
+exports.Method = Method;
+exports.ReferrerPolicy = ReferrerPolicy;
+exports.RequestType = RequestType;
 exports.RequestDestination = RequestDestination;
-exports.RequestMode        = RequestMode;
+exports.RequestMode = RequestMode;
 exports.RequestCredentials = RequestCredentials;
-exports.RequestCache       = RequestCache;
-exports.RequestRedirect    = RequestRedirect;
-exports.HeadersInit        = HeadersInit;
-exports.Headers            = Headers;
-exports.BodyInit           = BodyInit;
-exports.Body               = Body;
-exports.RequestInit        = RequestInit;
-exports.Request            = Request;
-exports.Response           = Response;
+exports.RequestCache = RequestCache;
+exports.RequestRedirect = RequestRedirect;
+exports.HeadersInit = HeadersInit;
+exports.Headers = Headers;
+exports.BodyInit = BodyInit;
+exports.Body = Body;
+exports.RequestInit = RequestInit;
+exports.Request = Request;
+exports.Response = Response;
 /* No side effect */

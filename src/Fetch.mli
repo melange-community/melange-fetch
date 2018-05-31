@@ -172,7 +172,7 @@ module RequestInit : sig
     ?cache:RequestCache.t ->
     ?redirect:RequestRedirect.t ->
     ?integrity:string ->
-    ?keepalive:Js.boolean ->
+    ?keepalive:bool ->
     unit -> t
 end
 

@@ -175,7 +175,7 @@ module RequestInit = struct
     ?cache:RequestCache.t ->
     ?redirect:RequestRedirect.t ->
     ?integrity:string ->
-    ?keepalive:Js.boolean ->
+    ?keepalive:bool ->
     unit -> requestInit = "" [@@bs.obj]
 end
 
