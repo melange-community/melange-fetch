@@ -42,6 +42,9 @@ See usage examples in [`ocaml_examples.ml`](https://github.com/reasonml-communit
 
 ## Changes
 
+### 0.4.0
+* Bumped `bs-platform` to 5.0.4 to stop compiler from complaining.
+
 ### 0.3.0
 * Added `HeadersInit.makeWithDict` so as to be able to make headers in OCaml too
 * Require `bs-platform` >= 3.0.0 due to internal dependency on Js.boolean that has now been removed
