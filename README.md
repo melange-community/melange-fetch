@@ -42,6 +42,9 @@ See usage examples in [`ocaml_examples.ml`](https://github.com/reasonml-communit
 
 ## Changes
 
+### 0.5.0
+* Fixed `Headers.append` and `Headers.delete`. They were missing the return type.
+
 ### 0.4.0
 * Bumped `bs-platform` to 5.0.4 to stop compiler from complaining.
 
