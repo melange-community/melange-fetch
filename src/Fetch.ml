@@ -230,8 +230,8 @@ module Headers = struct
   external make : t = "Headers" [@@bs.new]
   external makeWithInit : headersInit -> t = "Headers" [@@bs.new]
 
-  external append : string -> string = "" [@@bs.send.pipe: t]
-  external delete : string = "" [@@bs.send.pipe: t]
+  external append : string -> string -> unit = "" [@@bs.send.pipe: t]
+  external delete : string -> unit = "" [@@bs.send.pipe: t]
   (* entries *) (* very experimental *)
   external get : string -> string option = "" [@@bs.send.pipe: t] [@@bs.return {null_to_opt}]
   external has : string -> bool = "" [@@bs.send.pipe: t]
