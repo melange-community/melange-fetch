@@ -230,13 +230,13 @@ module Headers = struct
   external make : t = "Headers" [@@bs.new]
   external makeWithInit : headersInit -> t = "Headers" [@@bs.new]
 
-  external append : string -> string -> unit = "" [@@bs.send.pipe: t]
-  external delete : string -> unit = "" [@@bs.send.pipe: t]
+  external append : string -> string -> unit = "append" [@@bs.send.pipe: t]
+  external delete : string -> unit = "delete" [@@bs.send.pipe: t]
   (* entries *) (* very experimental *)
-  external get : string -> string option = "" [@@bs.send.pipe: t] [@@bs.return {null_to_opt}]
-  external has : string -> bool = "" [@@bs.send.pipe: t]
+  external get : string -> string option = "get" [@@bs.send.pipe: t] [@@bs.return {null_to_opt}]
+  external has : string -> bool = "has" [@@bs.send.pipe: t]
   (* keys *) (* very experimental *)
-  external set : string -> string -> unit = "" [@@bs.send.pipe: t]
+  external set : string -> string -> unit = "set" [@@bs.send.pipe: t]
   (* values *) (* very experimental *)
 end
 
@@ -252,14 +252,14 @@ end
 
 module Body = struct
   module Impl(T: sig type t end) = struct
-    external body : T.t -> readableStream = "" [@@bs.get]
-    external bodyUsed : T.t -> bool = "" [@@bs.get]
+    external body : T.t -> readableStream = "body" [@@bs.get]
+    external bodyUsed : T.t -> bool = "bodyUsed" [@@bs.get]
 
-    external arrayBuffer : arrayBuffer Js.Promise.t = "" [@@bs.send.pipe: T.t]
-    external blob : blob Js.Promise.t = "" [@@bs.send.pipe: T.t]
-    external formData : formData Js.Promise.t = "" [@@bs.send.pipe: T.t]
-    external json : Js.Json.t Js.Promise.t = "" [@@bs.send.pipe: T.t]
-    external text : string Js.Promise.t = "" [@@bs.send.pipe: T.t]
+    external arrayBuffer : arrayBuffer Js.Promise.t = "arrayBuffer" [@@bs.send.pipe: T.t]
+    external blob : blob Js.Promise.t = "blob" [@@bs.send.pipe: T.t]
+    external formData : formData Js.Promise.t = "formData" [@@bs.send.pipe: T.t]
+    external json : Js.Json.t Js.Promise.t = "json" [@@bs.send.pipe: T.t]
+    external text : string Js.Promise.t = "text" [@@bs.send.pipe: T.t]
   end
 
   type t = body
@@ -324,25 +324,25 @@ module Request = struct
 
   external method_ : t -> string = "method" [@@bs.get]
   let method_: t -> requestMethod = fun self -> decodeRequestMethod (method_ self)
-  external url : t -> string = ""[@@bs.get]
-  external headers : t -> headers = "" [@@bs.get]
+  external url : t -> string = "url"[@@bs.get]
+  external headers : t -> headers = "headers" [@@bs.get]
   external type_ : t -> string = "type" [@@bs.get]
   let type_: t -> requestType = fun self -> decodeRequestType (type_ self)
-  external destination : t -> string = "" [@@bs.get]
+  external destination : t -> string = "destination" [@@bs.get]
   let destination: t -> requestDestination = fun self -> decodeRequestDestination (destination self)
-  external referrer : t -> string = "" [@@bs.get]
-  external referrerPolicy : t -> string = "" [@@bs.get]
+  external referrer : t -> string = "referrer" [@@bs.get]
+  external referrerPolicy : t -> string = "referrerPolicy" [@@bs.get]
   let referrerPolicy: t -> referrerPolicy = fun self -> decodeReferrerPolicy (referrerPolicy self)
-  external mode : t -> string = "" [@@bs.get]
+  external mode : t -> string = "mode" [@@bs.get]
   let mode: t -> requestMode = fun self  -> decodeRequestMode (mode self)
-  external credentials : t -> string = "" [@@bs.get]
+  external credentials : t -> string = "credentials" [@@bs.get]
   let credentials: t -> requestCredentials = fun self -> decodeRequestCredentials (credentials self)
-  external cache : t -> string = "" [@@bs.get]
+  external cache : t -> string = "cache" [@@bs.get]
   let cache: t -> requestCache = fun self -> decodeRequestCache (cache self)
-  external redirect : t -> string = "" [@@bs.get]
+  external redirect : t -> string = "redirect" [@@bs.get]
   let redirect: t -> requestRedirect = fun self -> decodeRequestRedirect (redirect self)
-  external integrity : t -> string = "" [@@bs.get]
-  external keepalive : t -> bool = "" [@@bs.get]
+  external integrity : t -> string = "integrity" [@@bs.get]
+  external keepalive : t -> bool = "keepalive" [@@bs.get]
 end
 
 module Response = struct
@@ -350,22 +350,22 @@ module Response = struct
 
   include Body.Impl(struct type nonrec t = t end)
 
-  external error : unit -> t = "" [@@bs.val]
-  external redirect : string -> t = "" [@@bs.val]
+  external error : unit -> t = "error" [@@bs.val]
+  external redirect : string -> t = "redirect" [@@bs.val]
   external redirectWithStatus : string -> int (* enum-ish *) -> t = "redirect" [@@bs.val]
-  external headers : t -> headers = "" [@@bs.get]
-  external ok : t -> bool = "" [@@bs.get]
-  external redirected : t -> bool = "" [@@bs.get]
-  external status : t -> int = "" [@@bs.get]
-  external statusText : t -> string = "" [@@bs.get]
-  external _type : t -> string = "" [@@bs.get]
-  external url : t -> string = "" [@@bs.get]
+  external headers : t -> headers = "headers" [@@bs.get]
+  external ok : t -> bool = "ok" [@@bs.get]
+  external redirected : t -> bool = "redirected" [@@bs.get]
+  external status : t -> int = "status" [@@bs.get]
+  external statusText : t -> string = "statusText" [@@bs.get]
+  external _type : t -> string = "_type" [@@bs.get]
+  external url : t -> string = "url" [@@bs.get]
 
-  external clone : t = "" [@@bs.send.pipe: t]
+  external clone : t = "clone" [@@bs.send.pipe: t]
 end
 
 
-external fetch : string -> response Js.Promise.t = "" [@@bs.val]
+external fetch : string -> response Js.Promise.t = "fetch" [@@bs.val]
 external fetchWithInit : string -> requestInit -> response Js.Promise.t = "fetch" [@@bs.val]
 external fetchWithRequest : request -> response Js.Promise.t = "fetch" [@@bs.val]
 external fetchWithRequestInit : request -> requestInit -> response Js.Promise.t = "fetch" [@@bs.val]
