@@ -102,13 +102,13 @@ module Headers : sig
   external make : t = "Headers" [@@bs.new]
   external makeWithInit : headersInit -> t = "Headers" [@@bs.new]
 
-  external append : string -> string -> unit = "" [@@bs.send.pipe: t]
-  external delete : string -> unit = "" [@@bs.send.pipe: t]
+  external append : string -> string -> unit = "append" [@@bs.send.pipe: t]
+  external delete : string -> unit = "delete" [@@bs.send.pipe: t]
   (* entries *) (* very experimental *)
-  external get : string -> string option = "" [@@bs.send.pipe: t] [@@bs.return {null_to_opt}]
-  external has : string -> bool = "" [@@bs.send.pipe: t]
+  external get : string -> string option = "get" [@@bs.send.pipe: t] [@@bs.return {null_to_opt}]
+  external has : string -> bool = "has" [@@bs.send.pipe: t]
   (* keys *) (* very experimental *)
-  external set : string -> string -> unit = "" [@@bs.send.pipe: t]
+  external set : string -> string -> unit = "set" [@@bs.send.pipe: t]
   (* values *) (* very experimental *)
 end
 
@@ -125,14 +125,14 @@ end
 module Body : sig
   type t = body
 
-  external body : t -> readableStream = "" [@@bs.get]
-  external bodyUsed : t -> bool = "" [@@bs.get]
+  external body : t -> readableStream = "body" [@@bs.get]
+  external bodyUsed : t -> bool = "bodyUsed" [@@bs.get]
 
-  external arrayBuffer : arrayBuffer Js.Promise.t = "" [@@bs.send.pipe: t]
-  external blob : blob Js.Promise.t = "" [@@bs.send.pipe: t]
-  external formData : formData Js.Promise.t = "" [@@bs.send.pipe: t]
-  external json : Js.Json.t Js.Promise.t = "" [@@bs.send.pipe: t]
-  external text : string Js.Promise.t = "" [@@bs.send.pipe: t]
+  external arrayBuffer : arrayBuffer Js.Promise.t = "arrayBuffer" [@@bs.send.pipe: t]
+  external blob : blob Js.Promise.t = "blob" [@@bs.send.pipe: t]
+  external formData : formData Js.Promise.t = "formData" [@@bs.send.pipe: t]
+  external json : Js.Json.t Js.Promise.t = "json" [@@bs.send.pipe: t]
+  external text : string Js.Promise.t = "text" [@@bs.send.pipe: t]
 end
 
 module RequestInit : sig
@@ -162,58 +162,58 @@ module Request : sig
   external makeWithRequestInit : t -> requestInit -> t = "Request" [@@bs.new]
 
   val method_: t -> requestMethod
-  external url : t -> string = ""[@@bs.get]
-  external headers : t -> headers = "" [@@bs.get]
+  external url : t -> string = "url"[@@bs.get]
+  external headers : t -> headers = "headers" [@@bs.get]
   val type_: t -> requestType
   val destination: t -> requestDestination
-  external referrer : t -> string = "" [@@bs.get]
+  external referrer : t -> string = "referrer" [@@bs.get]
   val referrerPolicy: t -> referrerPolicy
   val mode: t -> requestMode
   val credentials: t -> requestCredentials
   val cache: t -> requestCache
   val redirect: t -> requestRedirect
-  external integrity : t -> string = "" [@@bs.get]
-  external keepalive : t -> bool = "" [@@bs.get]
+  external integrity : t -> string = "integrity" [@@bs.get]
+  external keepalive : t -> bool = "keepalive" [@@bs.get]
 
   (* Body Impl *)
-  external body : t -> readableStream = "" [@@bs.get]
-  external bodyUsed : t -> bool = "" [@@bs.get]
+  external body : t -> readableStream = "body" [@@bs.get]
+  external bodyUsed : t -> bool = "bodyUsed" [@@bs.get]
 
-  external arrayBuffer : arrayBuffer Js.Promise.t = "" [@@bs.send.pipe: t]
-  external blob : blob Js.Promise.t = "" [@@bs.send.pipe: t]
-  external formData : formData Js.Promise.t = "" [@@bs.send.pipe: t]
-  external json : Js.Json.t Js.Promise.t = "" [@@bs.send.pipe: t]
-  external text : string Js.Promise.t = "" [@@bs.send.pipe: t]
+  external arrayBuffer : arrayBuffer Js.Promise.t = "arrayBuffer" [@@bs.send.pipe: t]
+  external blob : blob Js.Promise.t = "blob" [@@bs.send.pipe: t]
+  external formData : formData Js.Promise.t = "formData" [@@bs.send.pipe: t]
+  external json : Js.Json.t Js.Promise.t = "json" [@@bs.send.pipe: t]
+  external text : string Js.Promise.t = "text" [@@bs.send.pipe: t]
 end
 
 module Response : sig
   type t = response
 
-  external error : unit -> t = "" [@@bs.val]
-  external redirect : string -> t = "" [@@bs.val]
+  external error : unit -> t = "error" [@@bs.val]
+  external redirect : string -> t = "redirect" [@@bs.val]
   external redirectWithStatus : string -> int (* enum-ish *) -> t = "redirect" [@@bs.val]
-  external headers : t -> headers = "" [@@bs.get]
-  external ok : t -> bool = "" [@@bs.get]
-  external redirected : t -> bool = "" [@@bs.get]
-  external status : t -> int = "" [@@bs.get]
-  external statusText : t -> string = "" [@@bs.get]
-  external _type : t -> string = "" [@@bs.get]
-  external url : t -> string = "" [@@bs.get]
+  external headers : t -> headers = "headers" [@@bs.get]
+  external ok : t -> bool = "ok" [@@bs.get]
+  external redirected : t -> bool = "redirected" [@@bs.get]
+  external status : t -> int = "status" [@@bs.get]
+  external statusText : t -> string = "statusText" [@@bs.get]
+  external _type : t -> string = "_type" [@@bs.get]
+  external url : t -> string = "url" [@@bs.get]
 
-  external clone : t = "" [@@bs.send.pipe: t]
+  external clone : t = "clone" [@@bs.send.pipe: t]
 
   (* Body.Impl *)
-  external body : t -> readableStream = "" [@@bs.get]
-  external bodyUsed : t -> bool = "" [@@bs.get]
+  external body : t -> readableStream = "body" [@@bs.get]
+  external bodyUsed : t -> bool = "bodyUsed" [@@bs.get]
 
-  external arrayBuffer : arrayBuffer Js.Promise.t = "" [@@bs.send.pipe: t]
-  external blob : blob Js.Promise.t = "" [@@bs.send.pipe: t]
-  external formData : formData Js.Promise.t = "" [@@bs.send.pipe: t]
-  external json : Js.Json.t Js.Promise.t = "" [@@bs.send.pipe: t]
-  external text : string Js.Promise.t = "" [@@bs.send.pipe: t]
+  external arrayBuffer : arrayBuffer Js.Promise.t = "arrayBuffer" [@@bs.send.pipe: t]
+  external blob : blob Js.Promise.t = "blob" [@@bs.send.pipe: t]
+  external formData : formData Js.Promise.t = "formData" [@@bs.send.pipe: t]
+  external json : Js.Json.t Js.Promise.t = "json" [@@bs.send.pipe: t]
+  external text : string Js.Promise.t = "text" [@@bs.send.pipe: t]
 end
 
-external fetch : string -> response Js.Promise.t = "" [@@bs.val]
+external fetch : string -> response Js.Promise.t = "fetch" [@@bs.val]
 external fetchWithInit : string -> requestInit -> response Js.Promise.t = "fetch" [@@bs.val]
 external fetchWithRequest : request -> response Js.Promise.t = "fetch" [@@bs.val]
 external fetchWithRequestInit : request -> requestInit -> response Js.Promise.t = "fetch" [@@bs.val]
