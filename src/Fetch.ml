@@ -5,6 +5,9 @@ type headersInit
 type response
 type request
 type requestInit
+type abortController
+type signal
+
 
 (* external *)
 type arrayBuffer (* TypedArray *)
@@ -13,6 +16,14 @@ type bufferSource (* Web IDL, either an arrayBuffer or arrayBufferView *)
 type formData (* XMLHttpRequest *)
 type readableStream (* Streams *)
 type urlSearchParams (* URL *)
+
+module AbortController = struct
+  type t = abortController
+
+  external signal : t -> signal = "signal" [@@bs.get]
+  external abort : t -> unit = "abort" [@@bs.send.pipe: t]
+  external make : unit -> t = "AbortController" [@@bs.new]
+end
 
 type requestMethod =
   | Get
@@ -285,6 +296,7 @@ module RequestInit = struct
     ?redirect:string ->
     ?integrity:string ->
     ?keepalive:bool ->
+    ?signal:signal ->
     unit -> requestInit = "" [@@bs.obj]
   let make
     ?method_:(method_: requestMethod option) 
@@ -298,6 +310,7 @@ module RequestInit = struct
     ?redirect:(redirect: requestRedirect option) 
     ?integrity:(integrity: string = "") 
     ?keepalive:(keepalive: bool option)
+    ?signal:(signal: signal option)
     = make
         ?_method: (map encodeRequestMethod method_)
         ?headers
@@ -310,6 +323,7 @@ module RequestInit = struct
         ?redirect: (map encodeRequestRedirect redirect)
         ~integrity
         ?keepalive: keepalive
+        ?signal
 end
 
 module Request = struct
