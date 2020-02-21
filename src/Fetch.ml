@@ -357,6 +357,7 @@ module Request = struct
   let redirect: t -> requestRedirect = fun self -> decodeRequestRedirect (redirect self)
   external integrity : t -> string = "integrity" [@@bs.get]
   external keepalive : t -> bool = "keepalive" [@@bs.get]
+  external signal : t -> signal = "signal" [@@bs.get]
 end
 
 module Response = struct
