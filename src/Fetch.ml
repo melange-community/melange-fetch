@@ -21,7 +21,7 @@ module AbortController = struct
   type t = abortController
 
   external signal : t -> signal = "signal" [@@bs.get]
-  external abort : t -> unit = "abort" [@@bs.send.pipe: t]
+  external abort : unit -> unit = "abort" [@@bs.send.pipe: t]
   external make : unit -> t = "AbortController" [@@bs.new]
 end
 
