@@ -35,7 +35,7 @@ module AbortController : sig
 (* Experimental API *)
   external signal : t -> signal = "signal" [@@bs.get]
 (* Experimental API *)
-  external abort : t -> unit = "abort" [@@bs.send]
+  external abort : unit -> unit = "abort" [@@bs.send.pipe: t]
 (* Experimental API *)
   external make : unit -> t = "AbortController" [@@bs.new]
 end
