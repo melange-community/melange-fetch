@@ -13,6 +13,8 @@ type bufferSource (* Web IDL, either an arrayBuffer or arrayBufferView *)
 type formData (* XMLHttpRequest *)
 type readableStream (* Streams *)
 type urlSearchParams (* URL *)
+type abortController
+type signal
 
 type requestMethod =
   | Get
@@ -25,6 +27,18 @@ type requestMethod =
   | Trace
   | Patch
   | Other of string
+
+module AbortController : sig
+(* Experimental API *)
+  type t = abortController
+
+(* Experimental API *)
+  external signal : t -> signal = "signal" [@@bs.get]
+(* Experimental API *)
+  external abort : unit = "abort" [@@bs.send.pipe: t]
+(* Experimental API *)
+  external make : unit -> t = "AbortController" [@@bs.new]
+end
 
 type referrerPolicy =
   | None
@@ -150,6 +164,7 @@ module RequestInit : sig
     ?redirect:requestRedirect ->
     ?integrity:string ->
     ?keepalive:bool ->
+    ?signal:signal ->
     unit -> t
 end
 
@@ -174,6 +189,7 @@ module Request : sig
   val redirect: t -> requestRedirect
   external integrity : t -> string = "integrity" [@@bs.get]
   external keepalive : t -> bool = "keepalive" [@@bs.get]
+  external signal : t -> signal = "signal" [@@bs.get]
 
   (* Body Impl *)
   external body : t -> readableStream = "body" [@@bs.get]
