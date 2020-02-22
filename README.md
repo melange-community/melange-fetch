@@ -42,6 +42,9 @@ See usage examples in [`ocaml_examples.ml`](https://github.com/reasonml-communit
 
 ## Changes
 
+### 0.5.2
+* Added `AbortController`
+
 ### 0.5.0
 * Fixed `Headers.append` and `Headers.delete`. They were missing the return type.
 
