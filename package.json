@@ -1,6 +1,6 @@
 {
   "name": "bs-fetch",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "description": "Fetch bindings for BuckleScript",
   "scripts": {
     "build": "bsb -make-world",
