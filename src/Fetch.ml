@@ -373,7 +373,7 @@ module Response = struct
   external redirected : t -> bool = "redirected" [@@bs.get]
   external status : t -> int = "status" [@@bs.get]
   external statusText : t -> string = "statusText" [@@bs.get]
-  external _type : t -> string = "_type" [@@bs.get]
+  external type_ : t -> string = "type" [@@bs.get]
   external url : t -> string = "url" [@@bs.get]
 
   external clone : t = "clone" [@@bs.send.pipe: t]
