@@ -42,6 +42,10 @@ See usage examples in [`ocaml_examples.ml`](https://github.com/reasonml-communit
 
 ## Changes
 
+### 0.6.0
+* Bugfix: `Response._type` was generating `_type` instead of `type`
+* Breaking: Rename `Response._type` to `Response.type_` to follow the name mangling convention trends
+
 ### 0.5.2
 * Added `AbortController`
 
