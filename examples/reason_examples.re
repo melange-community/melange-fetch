@@ -50,8 +50,8 @@ let _ = {
 let _ = {
   let formData = Fetch.FormData.make();
   Fetch.FormData.appendObject(
-    ~name="image0",
-    ~value={"type": "image/jpg", "uri": "path/to/it", "name": "image0.jpg"},
+    "image0",
+    {"type": "image/jpg", "uri": "path/to/it", "name": "image0.jpg"},
     formData
   );
 

@@ -248,33 +248,33 @@ module FormData : sig
   type t = formData
 
   external make : unit -> t = "FormData" [@@bs.new]
-  external append : name:string -> value:string -> unit = "append" [@@bs.send.pipe : t]
+  external append : string -> string -> unit = "append" [@@bs.send.pipe : t]
   external delete : string -> unit = "delete" [@@bs.send.pipe : t]
   external get : string -> EntryValue.t option = "get" [@@bs.send.pipe : t]
   external getAll : string -> EntryValue.t array = "getAll" [@@bs.send.pipe : t]
-  external set : name:string -> value:string -> unit = "set" [@@bs.send.pipe : t]
+  external set : string -> string -> unit = "set" [@@bs.send.pipe : t]
   external has : string -> bool = "has" [@@bs.send.pipe : t]
   external keys : t -> string Iterator.t = "keys" [@@bs.send]
   external values : t -> EntryValue.t Iterator.t = "values" [@@bs.send]
 
-  external appendObject : name:string -> value:< .. > Js.t -> ?filename:string -> unit =
+  external appendObject : string -> _ Js.t -> ?filename:string -> unit =
     "append" [@@bs.send.pipe : t]
   (** This is for React Native compatibility purposes *)
 
-  external appendBlob : name:string -> value:blob -> ?filename:string -> unit =
+  external appendBlob : string -> blob -> ?filename:string -> unit =
     "append" [@@bs.send.pipe : t]
 
-  external appendFile : name:string -> value:file -> ?filename:string -> unit =
+  external appendFile : string -> file -> ?filename:string -> unit =
     "append" [@@bs.send.pipe : t]
 
-  external setObject : name:string -> value:< .. > Js.t -> ?filename:string -> unit =
+  external setObject : string -> _ Js.t -> ?filename:string -> unit =
     "set" [@@bs.send.pipe : t]
   (** This is for React Native compatibility purposes *)
 
-  external setBlob : name:string -> value:blob -> ?filename:string -> unit =
+  external setBlob : string -> blob -> ?filename:string -> unit =
     "set" [@@bs.send.pipe : t]
 
-  external setFile : name:string -> value:file -> ?filename:string -> unit =
+  external setFile : string -> file -> ?filename:string -> unit =
     "set" [@@bs.send.pipe : t]
 
   external entries : t -> (string * EntryValue.t) Iterator.t = "entries" [@@bs.send]
