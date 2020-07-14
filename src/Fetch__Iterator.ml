@@ -17,4 +17,4 @@ let rec forEach ~f t =
   | (Some false | None), Some value ->
     f value [@bs];
     forEach ~f t
-  | _, None -> ()
+  | (Some false | None), None -> forEach ~f t
