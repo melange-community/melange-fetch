@@ -274,7 +274,7 @@ module FormData : sig
   external setBlob : name:string -> value:blob -> ?filename:string -> unit =
     "set" [@@bs.send.pipe : t]
 
-  external setFile : name:string -> value:blob -> ?filename:string -> unit =
+  external setFile : name:string -> value:file -> ?filename:string -> unit =
     "set" [@@bs.send.pipe : t]
 
   external entries : t -> (string * EntryValue.t) Iterator.t = "entries" [@@bs.send]
