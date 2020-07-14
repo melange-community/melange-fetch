@@ -49,8 +49,11 @@ let _ = {
 
 let _ = {
   let formData = Fetch.FormData.make();
-
-  formData |> Fetch.FormData.appendObject(~name="image0", ~value={"type": "image/jpg", "uri": "path/to/it", "name": "image0.jpg"});
+  Fetch.FormData.appendObject(
+    ~name="image0",
+    ~value={"type": "image/jpg", "uri": "path/to/it", "name": "image0.jpg"},
+    formData
+  );
 
   Js.Promise.(
     Fetch.fetchWithInit(
