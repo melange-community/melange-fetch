@@ -11,11 +11,13 @@ type signal
 
 (* external *)
 type arrayBuffer (* TypedArray *)
-type blob (* FileAPI *)
 type bufferSource (* Web IDL, either an arrayBuffer or arrayBufferView *)
 type formData (* XMLHttpRequest *)
 type readableStream (* Streams *)
 type urlSearchParams (* URL *)
+
+type blob
+type file
 
 module AbortController = struct
   type t = abortController
@@ -73,8 +75,8 @@ type referrerPolicy =
   | UnsafeUrl
 let encodeReferrerPolicy = (* internal *)
   function
-  | None  -> ""
   | NoReferrer  -> "no-referrer"
+  | None  -> ""
   | NoReferrerWhenDowngrade  -> "no-referrer-when-downgrade"
   | SameOrigin  -> "same-origin"
   | Origin  -> "origin"
@@ -84,8 +86,8 @@ let encodeReferrerPolicy = (* internal *)
   | UnsafeUrl  -> "unsafe-url"
 let decodeReferrerPolicy = (* internal *)
   function
-  | "" -> None
   | "no-referrer" -> NoReferrer
+  | "" -> None
   | "no-referrer-when-downgrade" -> NoReferrerWhenDowngrade
   | "same-origin" -> SameOrigin
   | "origin" -> Origin
@@ -106,8 +108,8 @@ type requestType =
   | Video
 let decodeRequestType = (* internal *)
   function
-  | "" -> None
   | "audio" -> Audio
+  | "" -> None
   | "font" -> Font
   | "image" -> Image
   | "script" -> Script
@@ -134,8 +136,8 @@ type requestDestination =
   | Xslt
 let decodeRequestDestination = (* internal *)
   function
-  | "" -> None
   | "document" -> Document
+  | "" -> None
   | "embed" -> Embed
   | "font" -> Font
   | "image" -> Image
@@ -379,29 +381,48 @@ module Response = struct
   external clone : t = "clone" [@@bs.send.pipe: t]
 end
 
-(* This belongs to XHR spec and will probably be moved to another repo in the future *)
-
-module Blob = struct
-  type t
-end
-
 module FormData = struct 
+  module EntryValue = struct
+    type t
+
+    let classify t =
+      if Js.typeof t = "string" then `String (Obj.magic t)
+      else `File (Obj.magic t)
+  end
+
+  module Iterator = Fetch__Iterator
   type t = formData
 
   external make : unit -> t = "FormData" [@@bs.new]
-
-  (* Added for React Native polyfill compatibility *)
-  external appendObject : string -> < .. > Js.t -> unit = "append" [@@bs.send.pipe : t]
-  external appendBlob : string -> Blob.t -> unit = "append" [@@bs.send.pipe : t]
-  external appendString : string -> string -> unit = "append" [@@bs.send.pipe : t]
-
+  external append : name:string -> value:string -> unit = "append" [@@bs.send.pipe : t]
   external delete : string -> unit = "delete" [@@bs.send.pipe : t]
+  external get : string -> EntryValue.t option = "get" [@@bs.send.pipe : t]
+  external getAll : string -> EntryValue.t array = "getAll" [@@bs.send.pipe : t]
+  external set : name:string -> value:string -> unit = "set" [@@bs.send.pipe : t]
+  external has : string -> bool = "has" [@@bs.send.pipe : t]
+  external keys : t -> string Iterator.t = "keys" [@@bs.send]
+  external values : t -> EntryValue.t Iterator.t = "values" [@@bs.send]
 
-  external setObject : string -> < .. > Js.t -> unit = "set" [@@bs.send.pipe : t]
-  external setBlob : string -> Blob.t -> unit = "set" [@@bs.send.pipe : t]
-  external setString : string -> string -> unit = "set" [@@bs.send.pipe : t]
+  external appendObject : name:string -> value:< .. > Js.t -> ?filename:string -> unit =
+    "append" [@@bs.send.pipe : t]
+
+  external appendBlob : name:string -> value:blob -> ?filename:string -> unit =
+    "append" [@@bs.send.pipe : t]
+
+  external appendFile : name:string -> value:file -> ?filename:string -> unit =
+    "append" [@@bs.send.pipe : t]
+
+  external setObject : name:string -> value:< .. > Js.t -> ?filename:string -> unit =
+    "set" [@@bs.send.pipe : t]
+
+  external setBlob : name:string -> value:blob -> ?filename:string -> unit =
+    "set" [@@bs.send.pipe : t]
+
+  external setFile : name:string -> value:blob -> ?filename:string -> unit =
+    "set" [@@bs.send.pipe : t]
+
+  external entries : t -> (string * EntryValue.t) Iterator.t = "entries" [@@bs.send]
 end
-
 
 external fetch : string -> response Js.Promise.t = "fetch" [@@bs.val]
 external fetchWithInit : string -> requestInit -> response Js.Promise.t = "fetch" [@@bs.val]
