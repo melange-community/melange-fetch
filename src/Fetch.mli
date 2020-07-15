@@ -257,7 +257,7 @@ module FormData : sig
   external keys : t -> string Iterator.t = "keys" [@@bs.send]
   external values : t -> EntryValue.t Iterator.t = "values" [@@bs.send]
 
-  external appendObject : string -> _ Js.t -> ?filename:string -> unit =
+  external appendObject : string -> < .. > Js.t -> ?filename:string -> unit =
     "append" [@@bs.send.pipe : t]
   (** This is for React Native compatibility purposes *)
 
@@ -267,7 +267,7 @@ module FormData : sig
   external appendFile : string -> file -> ?filename:string -> unit =
     "append" [@@bs.send.pipe : t]
 
-  external setObject : string -> _ Js.t -> ?filename:string -> unit =
+  external setObject : string -> < .. > Js.t -> ?filename:string -> unit =
     "set" [@@bs.send.pipe : t]
   (** This is for React Native compatibility purposes *)
 

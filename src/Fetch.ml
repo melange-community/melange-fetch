@@ -385,7 +385,7 @@ module FormData = struct
   module EntryValue = struct
     type t
 
-    let classify t : [> `String of string | `File of file] =
+    let classify : t -> [> `String of string | `File of file] = fun t ->
       if Js.typeof t = "string" then `String (Obj.magic t)
       else `File (Obj.magic t)
   end
@@ -403,7 +403,7 @@ module FormData = struct
   external keys : t -> string Iterator.t = "keys" [@@bs.send]
   external values : t -> EntryValue.t Iterator.t = "values" [@@bs.send]
 
-  external appendObject : string -> _ Js.t -> ?filename:string -> unit =
+  external appendObject : string -> < .. > Js.t -> ?filename:string -> unit =
     "append" [@@bs.send.pipe : t]
 
   external appendBlob : string -> blob -> ?filename:string -> unit =
@@ -412,7 +412,7 @@ module FormData = struct
   external appendFile : string -> file -> ?filename:string -> unit =
     "append" [@@bs.send.pipe : t]
 
-  external setObject : string -> _ Js.t -> ?filename:string -> unit =
+  external setObject : string -> < .. > Js.t -> ?filename:string -> unit =
     "set" [@@bs.send.pipe : t]
 
   external setBlob : string -> blob -> ?filename:string -> unit =
