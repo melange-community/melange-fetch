@@ -237,7 +237,7 @@ module FormData : sig
   module EntryValue : sig
     type t
     (** This represents a
-        {{: https://developer.mozilla.org/en-US/docs/Web/API/FormDataEntryValue] FormDataEntryValue}}. *)
+        {{: https://developer.mozilla.org/en-US/docs/Web/API/FormDataEntryValue} FormDataEntryValue}. *)
 
     val classify : t -> [> `String of string | `File of file]
     (** [classify entryValue] safely casts the [entryValue] to its
