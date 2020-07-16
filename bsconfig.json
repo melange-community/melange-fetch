@@ -15,5 +15,9 @@
       "dir": "examples",
       "type": "dev"
     }
-  ]
+  ],
+  "warnings": {
+    "number": "+A-42-105",
+    "error": "+A-3-44-102"
+  }
 }

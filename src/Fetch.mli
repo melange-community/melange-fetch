@@ -8,13 +8,17 @@ type requestInit
 
 (* external *)
 type arrayBuffer (* TypedArray *)
-type blob (* FileAPI *)
 type bufferSource (* Web IDL, either an arrayBuffer or arrayBufferView *)
 type formData (* XMLHttpRequest *)
 type readableStream (* Streams *)
 type urlSearchParams (* URL *)
 type abortController
 type signal
+
+(** File API *)
+
+type blob
+type file
 
 type requestMethod =
   | Get
@@ -227,6 +231,53 @@ module Response : sig
   external formData : formData Js.Promise.t = "formData" [@@bs.send.pipe: t]
   external json : Js.Json.t Js.Promise.t = "json" [@@bs.send.pipe: t]
   external text : string Js.Promise.t = "text" [@@bs.send.pipe: t]
+end
+
+module FormData : sig
+  module EntryValue : sig
+    type t
+    (** This represents a
+        {{: https://developer.mozilla.org/en-US/docs/Web/API/FormDataEntryValue} FormDataEntryValue}. *)
+
+    val classify : t -> [> `String of string | `File of file]
+    (** [classify entryValue] safely casts the [entryValue] to its
+        correct runtime type. *)
+  end
+
+  module Iterator = Fetch__Iterator
+  type t = formData
+
+  external make : unit -> t = "FormData" [@@bs.new]
+  external append : string -> string -> unit = "append" [@@bs.send.pipe : t]
+  external delete : string -> unit = "delete" [@@bs.send.pipe : t]
+  external get : string -> EntryValue.t option = "get" [@@bs.send.pipe : t]
+  external getAll : string -> EntryValue.t array = "getAll" [@@bs.send.pipe : t]
+  external set : string -> string -> unit = "set" [@@bs.send.pipe : t]
+  external has : string -> bool = "has" [@@bs.send.pipe : t]
+  external keys : t -> string Iterator.t = "keys" [@@bs.send]
+  external values : t -> EntryValue.t Iterator.t = "values" [@@bs.send]
+
+  external appendObject : string -> < .. > Js.t -> ?filename:string -> unit =
+    "append" [@@bs.send.pipe : t]
+  (** This is for React Native compatibility purposes *)
+
+  external appendBlob : string -> blob -> ?filename:string -> unit =
+    "append" [@@bs.send.pipe : t]
+
+  external appendFile : string -> file -> ?filename:string -> unit =
+    "append" [@@bs.send.pipe : t]
+
+  external setObject : string -> < .. > Js.t -> ?filename:string -> unit =
+    "set" [@@bs.send.pipe : t]
+  (** This is for React Native compatibility purposes *)
+
+  external setBlob : string -> blob -> ?filename:string -> unit =
+    "set" [@@bs.send.pipe : t]
+
+  external setFile : string -> file -> ?filename:string -> unit =
+    "set" [@@bs.send.pipe : t]
+
+  external entries : t -> (string * EntryValue.t) Iterator.t = "entries" [@@bs.send]
 end
 
 external fetch : string -> response Js.Promise.t = "fetch" [@@bs.val]

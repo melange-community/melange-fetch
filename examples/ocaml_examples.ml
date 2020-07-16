@@ -27,13 +27,15 @@ let _ =
   )
 
 let _ =
+  let headers = [%bs.raw {|
+    {"Content-type": "application/json"}
+  |}] in
   let payload = Js.Dict.empty () in
   Js.Dict.set payload "hello" (Js.Json.string "world");
   let open Js.Promise in
-    (Fetch.fetchWithInit "/api/hello"
-       (Fetch.RequestInit.make ~method_:Post
-          ~body:(Fetch.BodyInit.make
-                   (Js.Json.stringify (Js.Json.object_ payload)))
-          ~headers:(Fetch.HeadersInit.makeWithDict (Js.Dict.fromList [
-                     ("Content-Type", "application/json")])) ()))
-      |> (then_ Fetch.Response.json)
+  (Fetch.fetchWithInit "/api/hello"
+     (Fetch.RequestInit.make ~method_:Post
+        ~body:(Fetch.BodyInit.make
+                 (Js.Json.stringify (Js.Json.object_ payload)))
+        ~headers:(Fetch.HeadersInit.make headers) ()))
+  |> (then_ Fetch.Response.json)
