@@ -25,13 +25,12 @@ Js.Promise.(
 opam pin add melange-fetch.dev https://github.com/melange-community/melange-fetch
 ```
 
-Then add `melange-fetch` to `bs-dependencies` in your `bsconfig.json`:
+Then add `melange-fetch` to the `libraries` field in your dune file:
 
-```js
-{
-  ...
-  "bs-dependencies": ["melange-fetch"]
-}
+```lisp
+(melange.emit ;; or (library ...)
+ ...
+ (libraries melange-fetch))
 ```
 
 ## Usage
