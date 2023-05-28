@@ -244,7 +244,7 @@ module FormData : sig
         correct runtime type. *)
   end
 
-  module Iterator = Fetch__Iterator
+  module Iterator = Iterator
   type t = formData
 
   external make : unit -> t = "FormData" [@@bs.new]
