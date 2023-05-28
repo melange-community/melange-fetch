@@ -2,15 +2,13 @@ let _ =
   Js.Promise.(
     Fetch.fetch "/api/hellos/1"
     |> then_ Fetch.Response.text
-    |> then_ (fun text -> print_endline text |> resolve)
-  )
+    |> then_ (fun text -> print_endline text |> resolve))
 
 let _ =
   Js.Promise.(
     Fetch.fetchWithInit "/api/hello" (Fetch.RequestInit.make ~method_:Post ())
     |> then_ Fetch.Response.text
-    |> then_ (fun text -> print_endline text |> resolve)
-  )
+    |> then_ (fun text -> print_endline text |> resolve))
 
 let _ =
   Js.Promise.(
@@ -20,11 +18,10 @@ let _ =
     |> then_ (fun json -> Js.Json.decodeArray json |> resolve)
     |> then_ (fun opt -> Belt.Option.getExn opt |> resolve)
     |> then_ (fun items ->
-        items |> Js.Array.map (fun item ->
-                    item |> Js.Json.decodeString
-                         |> Belt.Option.getExn)
-              |> resolve)
-  )
+           items
+           |> Js.Array.map (fun item ->
+                  item |> Js.Json.decodeString |> Belt.Option.getExn)
+           |> resolve))
 
 let _ =
   let headers = [%bs.raw {|
@@ -33,9 +30,11 @@ let _ =
   let payload = Js.Dict.empty () in
   Js.Dict.set payload "hello" (Js.Json.string "world");
   let open Js.Promise in
-  (Fetch.fetchWithInit "/api/hello"
-     (Fetch.RequestInit.make ~method_:Post
-        ~body:(Fetch.BodyInit.make
-                 (Js.Json.stringify (Js.Json.object_ payload)))
-        ~headers:(Fetch.HeadersInit.make headers) ()))
-  |> (then_ Fetch.Response.json)
+  Fetch.fetchWithInit
+    "/api/hello"
+    (Fetch.RequestInit.make
+       ~method_:Post
+       ~body:(Fetch.BodyInit.make (Js.Json.stringify (Js.Json.object_ payload)))
+       ~headers:(Fetch.HeadersInit.make headers)
+       ())
+  |> then_ Fetch.Response.json
