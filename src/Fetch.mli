@@ -33,14 +33,16 @@ type requestMethod =
   | Other of string
 
 module AbortController : sig
-(* Experimental API *)
+  (* Experimental API *)
   type t = abortController
 
-(* Experimental API *)
+  (* Experimental API *)
   external signal : t -> signal = "signal" [@@bs.get]
-(* Experimental API *)
+
+  (* Experimental API *)
   external abort : unit = "abort" [@@bs.send.pipe: t]
-(* Experimental API *)
+
+  (* Experimental API *)
   external make : unit -> t = "AbortController" [@@bs.new]
 end
 
@@ -119,15 +121,21 @@ module Headers : sig
 
   external make : t = "Headers" [@@bs.new]
   external makeWithInit : headersInit -> t = "Headers" [@@bs.new]
-
   external append : string -> string -> unit = "append" [@@bs.send.pipe: t]
   external delete : string -> unit = "delete" [@@bs.send.pipe: t]
-  (* entries *) (* very experimental *)
-  external get : string -> string option = "get" [@@bs.send.pipe: t] [@@bs.return {null_to_opt}]
+  (* entries *)
+  (* very experimental *)
+
+  external get : string -> string option = "get"
+    [@@bs.send.pipe: t] [@@bs.return { null_to_opt }]
+
   external has : string -> bool = "has" [@@bs.send.pipe: t]
-  (* keys *) (* very experimental *)
+  (* keys *)
+  (* very experimental *)
+
   external set : string -> string -> unit = "set" [@@bs.send.pipe: t]
-  (* values *) (* very experimental *)
+  (* values *)
+  (* very experimental *)
 end
 
 module BodyInit : sig
@@ -146,7 +154,9 @@ module Body : sig
   external body : t -> readableStream = "body" [@@bs.get]
   external bodyUsed : t -> bool = "bodyUsed" [@@bs.get]
 
-  external arrayBuffer : arrayBuffer Js.Promise.t = "arrayBuffer" [@@bs.send.pipe: t]
+  external arrayBuffer : arrayBuffer Js.Promise.t = "arrayBuffer"
+    [@@bs.send.pipe: t]
+
   external blob : blob Js.Promise.t = "blob" [@@bs.send.pipe: t]
   external formData : formData Js.Promise.t = "formData" [@@bs.send.pipe: t]
   external json : Js.Json.t Js.Promise.t = "json" [@@bs.send.pipe: t]
@@ -157,19 +167,20 @@ module RequestInit : sig
   type t = requestInit
 
   val make :
-    ?method_:requestMethod ->
-    ?headers:headersInit ->
-    ?body:bodyInit ->
-    ?referrer:string ->
-    ?referrerPolicy:referrerPolicy ->
-    ?mode:requestMode ->
-    ?credentials:requestCredentials ->
-    ?cache:requestCache ->
-    ?redirect:requestRedirect ->
-    ?integrity:string ->
-    ?keepalive:bool ->
-    ?signal:signal ->
-    unit -> t
+     ?method_:requestMethod
+    -> ?headers:headersInit
+    -> ?body:bodyInit
+    -> ?referrer:string
+    -> ?referrerPolicy:referrerPolicy
+    -> ?mode:requestMode
+    -> ?credentials:requestCredentials
+    -> ?cache:requestCache
+    -> ?redirect:requestRedirect
+    -> ?integrity:string
+    -> ?keepalive:bool
+    -> ?signal:signal
+    -> unit
+    -> t
 end
 
 module Request : sig
@@ -179,18 +190,17 @@ module Request : sig
   external makeWithInit : string -> requestInit -> t = "Request" [@@bs.new]
   external makeWithRequest : t -> t = "Request" [@@bs.new]
   external makeWithRequestInit : t -> requestInit -> t = "Request" [@@bs.new]
-
-  val method_: t -> requestMethod
-  external url : t -> string = "url"[@@bs.get]
+  val method_ : t -> requestMethod
+  external url : t -> string = "url" [@@bs.get]
   external headers : t -> headers = "headers" [@@bs.get]
-  val type_: t -> requestType
-  val destination: t -> requestDestination
+  val type_ : t -> requestType
+  val destination : t -> requestDestination
   external referrer : t -> string = "referrer" [@@bs.get]
-  val referrerPolicy: t -> referrerPolicy
-  val mode: t -> requestMode
-  val credentials: t -> requestCredentials
-  val cache: t -> requestCache
-  val redirect: t -> requestRedirect
+  val referrerPolicy : t -> referrerPolicy
+  val mode : t -> requestMode
+  val credentials : t -> requestCredentials
+  val cache : t -> requestCache
+  val redirect : t -> requestRedirect
   external integrity : t -> string = "integrity" [@@bs.get]
   external keepalive : t -> bool = "keepalive" [@@bs.get]
   external signal : t -> signal = "signal" [@@bs.get]
@@ -199,7 +209,9 @@ module Request : sig
   external body : t -> readableStream = "body" [@@bs.get]
   external bodyUsed : t -> bool = "bodyUsed" [@@bs.get]
 
-  external arrayBuffer : arrayBuffer Js.Promise.t = "arrayBuffer" [@@bs.send.pipe: t]
+  external arrayBuffer : arrayBuffer Js.Promise.t = "arrayBuffer"
+    [@@bs.send.pipe: t]
+
   external blob : blob Js.Promise.t = "blob" [@@bs.send.pipe: t]
   external formData : formData Js.Promise.t = "formData" [@@bs.send.pipe: t]
   external json : Js.Json.t Js.Promise.t = "json" [@@bs.send.pipe: t]
@@ -211,7 +223,10 @@ module Response : sig
 
   external error : unit -> t = "error" [@@bs.val]
   external redirect : string -> t = "redirect" [@@bs.val]
-  external redirectWithStatus : string -> int (* enum-ish *) -> t = "redirect" [@@bs.val]
+
+  external redirectWithStatus : string -> int (* enum-ish *) -> t = "redirect"
+    [@@bs.val]
+
   external headers : t -> headers = "headers" [@@bs.get]
   external ok : t -> bool = "ok" [@@bs.get]
   external redirected : t -> bool = "redirected" [@@bs.get]
@@ -219,14 +234,15 @@ module Response : sig
   external statusText : t -> string = "statusText" [@@bs.get]
   external type_ : t -> string = "type" [@@bs.get]
   external url : t -> string = "url" [@@bs.get]
-
   external clone : t = "clone" [@@bs.send.pipe: t]
 
   (* Body.Impl *)
   external body : t -> readableStream = "body" [@@bs.get]
   external bodyUsed : t -> bool = "bodyUsed" [@@bs.get]
 
-  external arrayBuffer : arrayBuffer Js.Promise.t = "arrayBuffer" [@@bs.send.pipe: t]
+  external arrayBuffer : arrayBuffer Js.Promise.t = "arrayBuffer"
+    [@@bs.send.pipe: t]
+
   external blob : blob Js.Promise.t = "blob" [@@bs.send.pipe: t]
   external formData : formData Js.Promise.t = "formData" [@@bs.send.pipe: t]
   external json : Js.Json.t Js.Promise.t = "json" [@@bs.send.pipe: t]
@@ -237,50 +253,72 @@ module FormData : sig
   module EntryValue : sig
     type t
     (** This represents a
-        {{: https://developer.mozilla.org/en-US/docs/Web/API/FormDataEntryValue} FormDataEntryValue}. *)
+        {{:https://developer.mozilla.org/en-US/docs/Web/API/FormDataEntryValue}
+          FormDataEntryValue}. *)
 
-    val classify : t -> [> `String of string | `File of file]
-    (** [classify entryValue] safely casts the [entryValue] to its
-        correct runtime type. *)
+    val classify : t -> [> `String of string | `File of file ]
+    (** [classify entryValue] safely casts the [entryValue] to its correct
+        runtime type. *)
   end
 
   module Iterator = Iterator
+
   type t = formData
 
   external make : unit -> t = "FormData" [@@bs.new]
-  external append : string -> string -> unit = "append" [@@bs.send.pipe : t]
-  external delete : string -> unit = "delete" [@@bs.send.pipe : t]
-  external get : string -> EntryValue.t option = "get" [@@bs.send.pipe : t]
-  external getAll : string -> EntryValue.t array = "getAll" [@@bs.send.pipe : t]
-  external set : string -> string -> unit = "set" [@@bs.send.pipe : t]
-  external has : string -> bool = "has" [@@bs.send.pipe : t]
+  external append : string -> string -> unit = "append" [@@bs.send.pipe: t]
+  external delete : string -> unit = "delete" [@@bs.send.pipe: t]
+  external get : string -> EntryValue.t option = "get" [@@bs.send.pipe: t]
+  external getAll : string -> EntryValue.t array = "getAll" [@@bs.send.pipe: t]
+  external set : string -> string -> unit = "set" [@@bs.send.pipe: t]
+  external has : string -> bool = "has" [@@bs.send.pipe: t]
   external keys : t -> string Iterator.t = "keys" [@@bs.send]
   external values : t -> EntryValue.t Iterator.t = "values" [@@bs.send]
 
-  external appendObject : string -> < .. > Js.t -> ?filename:string -> unit =
-    "append" [@@bs.send.pipe : t]
+  external appendObject :
+     string
+    -> < .. > Js.t
+    -> ?filename:string
+    -> unit
+    = "append"
+    [@@bs.send.pipe: t]
   (** This is for React Native compatibility purposes *)
 
-  external appendBlob : string -> blob -> ?filename:string -> unit =
-    "append" [@@bs.send.pipe : t]
+  external appendBlob : string -> blob -> ?filename:string -> unit = "append"
+    [@@bs.send.pipe: t]
 
-  external appendFile : string -> file -> ?filename:string -> unit =
-    "append" [@@bs.send.pipe : t]
+  external appendFile : string -> file -> ?filename:string -> unit = "append"
+    [@@bs.send.pipe: t]
 
-  external setObject : string -> < .. > Js.t -> ?filename:string -> unit =
-    "set" [@@bs.send.pipe : t]
+  external setObject : string -> < .. > Js.t -> ?filename:string -> unit = "set"
+    [@@bs.send.pipe: t]
   (** This is for React Native compatibility purposes *)
 
-  external setBlob : string -> blob -> ?filename:string -> unit =
-    "set" [@@bs.send.pipe : t]
+  external setBlob : string -> blob -> ?filename:string -> unit = "set"
+    [@@bs.send.pipe: t]
 
-  external setFile : string -> file -> ?filename:string -> unit =
-    "set" [@@bs.send.pipe : t]
+  external setFile : string -> file -> ?filename:string -> unit = "set"
+    [@@bs.send.pipe: t]
 
-  external entries : t -> (string * EntryValue.t) Iterator.t = "entries" [@@bs.send]
+  external entries : t -> (string * EntryValue.t) Iterator.t = "entries"
+    [@@bs.send]
 end
 
 external fetch : string -> response Js.Promise.t = "fetch" [@@bs.val]
-external fetchWithInit : string -> requestInit -> response Js.Promise.t = "fetch" [@@bs.val]
-external fetchWithRequest : request -> response Js.Promise.t = "fetch" [@@bs.val]
-external fetchWithRequestInit : request -> requestInit -> response Js.Promise.t = "fetch" [@@bs.val]
+
+external fetchWithInit :
+   string
+  -> requestInit
+  -> response Js.Promise.t
+  = "fetch"
+  [@@bs.val]
+
+external fetchWithRequest : request -> response Js.Promise.t = "fetch"
+  [@@bs.val]
+
+external fetchWithRequestInit :
+   request
+  -> requestInit
+  -> response Js.Promise.t
+  = "fetch"
+  [@@bs.val]

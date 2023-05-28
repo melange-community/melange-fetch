@@ -12,9 +12,8 @@ end
 
 type 'a t
 
-val forEach : f:('a -> unit [@bs]) -> 'a t -> unit
-(** [forEach ~f iterator] runs [f] on each item returned by the
-    [iterator]. This is not defined by the platform but a convenience
-    function. *)
+val forEach : f:(('a -> unit)[@bs]) -> 'a t -> unit
+(** [forEach ~f iterator] runs [f] on each item returned by the [iterator]. This
+    is not defined by the platform but a convenience function. *)
 
 external next : 'a t -> 'a Next.t = "next" [@@bs.send]

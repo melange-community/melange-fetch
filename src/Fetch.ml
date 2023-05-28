@@ -8,14 +8,12 @@ type requestInit
 type abortController
 type signal
 
-
 (* external *)
 type arrayBuffer (* TypedArray *)
 type bufferSource (* Web IDL, either an arrayBuffer or arrayBufferView *)
 type formData (* XMLHttpRequest *)
 type readableStream (* Streams *)
 type urlSearchParams (* URL *)
-
 type blob
 type file
 
@@ -38,18 +36,20 @@ type requestMethod =
   | Trace
   | Patch
   | Other of string
+
 let encodeRequestMethod = (* internal *)
   function
-  | Get  -> "GET"
-  | Head  -> "HEAD"
-  | Post  -> "POST"
-  | Put  -> "PUT"
-  | Delete  -> "DELETE"
-  | Connect  -> "CONNECT"
-  | Options  -> "OPTIONS"
-  | Trace  -> "TRACE"
-  | Patch  -> "PATCH"
+  | Get -> "GET"
+  | Head -> "HEAD"
+  | Post -> "POST"
+  | Put -> "PUT"
+  | Delete -> "DELETE"
+  | Connect -> "CONNECT"
+  | Options -> "OPTIONS"
+  | Trace -> "TRACE"
+  | Patch -> "PATCH"
   | Other method_ -> method_
+
 let decodeRequestMethod = (* internal *)
   function
   | "GET" -> Get
@@ -73,17 +73,19 @@ type referrerPolicy =
   | OriginWhenCrossOrigin
   | StrictOriginWhenCrossOrigin
   | UnsafeUrl
+
 let encodeReferrerPolicy = (* internal *)
   function
-  | NoReferrer  -> "no-referrer"
-  | None  -> ""
-  | NoReferrerWhenDowngrade  -> "no-referrer-when-downgrade"
-  | SameOrigin  -> "same-origin"
-  | Origin  -> "origin"
-  | StrictOrigin  -> "strict-origin"
-  | OriginWhenCrossOrigin  -> "origin-when-cross-origin"
-  | StrictOriginWhenCrossOrigin  -> "strict-origin-when-cross-origin"
-  | UnsafeUrl  -> "unsafe-url"
+  | NoReferrer -> "no-referrer"
+  | None -> ""
+  | NoReferrerWhenDowngrade -> "no-referrer-when-downgrade"
+  | SameOrigin -> "same-origin"
+  | Origin -> "origin"
+  | StrictOrigin -> "strict-origin"
+  | OriginWhenCrossOrigin -> "origin-when-cross-origin"
+  | StrictOriginWhenCrossOrigin -> "strict-origin-when-cross-origin"
+  | UnsafeUrl -> "unsafe-url"
+
 let decodeReferrerPolicy = (* internal *)
   function
   | "no-referrer" -> NoReferrer
@@ -106,6 +108,7 @@ type requestType =
   | Style
   | Track
   | Video
+
 let decodeRequestType = (* internal *)
   function
   | "audio" -> Audio
@@ -134,6 +137,7 @@ type requestDestination =
   | Style
   | Worker
   | Xslt
+
 let decodeRequestDestination = (* internal *)
   function
   | "document" -> Document
@@ -158,12 +162,14 @@ type requestMode =
   | SameOrigin
   | NoCORS
   | CORS
+
 let encodeRequestMode = (* internal *)
   function
-  | Navigate  -> "navigate"
-  | SameOrigin  -> "same-origin"
-  | NoCORS  -> "no-cors"
-  | CORS  -> "cors"
+  | Navigate -> "navigate"
+  | SameOrigin -> "same-origin"
+  | NoCORS -> "no-cors"
+  | CORS -> "cors"
+
 let decodeRequestMode = (* internal *)
   function
   | "navigate" -> Navigate
@@ -176,11 +182,13 @@ type requestCredentials =
   | Omit
   | SameOrigin
   | Include
+
 let encodeRequestCredentials = (* internal *)
   function
-  | Omit  -> "omit"
-  | SameOrigin  -> "same-origin"
-  | Include  -> "include"
+  | Omit -> "omit"
+  | SameOrigin -> "same-origin"
+  | Include -> "include"
+
 let decodeRequestCredentials = (* internal *)
   function
   | "omit" -> Omit
@@ -195,14 +203,16 @@ type requestCache =
   | NoCache
   | ForceCache
   | OnlyIfCached
+
 let encodeRequestCache = (* internal *)
   function
-  | Default  -> "default"
-  | NoStore  -> "no-store"
-  | Reload  -> "reload"
-  | NoCache  -> "no-cache"
-  | ForceCache  -> "force-cache"
-  | OnlyIfCached  -> "only-if-cached"
+  | Default -> "default"
+  | NoStore -> "no-store"
+  | Reload -> "reload"
+  | NoCache -> "no-cache"
+  | ForceCache -> "force-cache"
+  | OnlyIfCached -> "only-if-cached"
+
 let decodeRequestCache = (* internal *)
   function
   | "default" -> Default
@@ -217,11 +227,13 @@ type requestRedirect =
   | Follow
   | Error
   | Manual
+
 let encodeRequestRedirect = (* internal *)
   function
-  | Follow  -> "follow"
-  | Error  -> "error"
-  | Manual  -> "manual"
+  | Follow -> "follow"
+  | Error -> "error"
+  | Manual -> "manual"
+
 let decodeRequestRedirect = (* internal *)
   function
   | "follow" -> Follow
@@ -242,15 +254,21 @@ module Headers = struct
 
   external make : t = "Headers" [@@bs.new]
   external makeWithInit : headersInit -> t = "Headers" [@@bs.new]
-
   external append : string -> string -> unit = "append" [@@bs.send.pipe: t]
   external delete : string -> unit = "delete" [@@bs.send.pipe: t]
-  (* entries *) (* very experimental *)
-  external get : string -> string option = "get" [@@bs.send.pipe: t] [@@bs.return {null_to_opt}]
+  (* entries *)
+  (* very experimental *)
+
+  external get : string -> string option = "get"
+    [@@bs.send.pipe: t] [@@bs.return { null_to_opt }]
+
   external has : string -> bool = "has" [@@bs.send.pipe: t]
-  (* keys *) (* very experimental *)
+  (* keys *)
+  (* very experimental *)
+
   external set : string -> string -> unit = "set" [@@bs.send.pipe: t]
-  (* values *) (* very experimental *)
+  (* values *)
+  (* very experimental *)
 end
 
 module BodyInit = struct
@@ -264,11 +282,16 @@ module BodyInit = struct
 end
 
 module Body = struct
-  module Impl(T: sig type t end) = struct
+  module Impl (T : sig
+    type t
+  end) =
+  struct
     external body : T.t -> readableStream = "body" [@@bs.get]
     external bodyUsed : T.t -> bool = "bodyUsed" [@@bs.get]
 
-    external arrayBuffer : arrayBuffer Js.Promise.t = "arrayBuffer" [@@bs.send.pipe: T.t]
+    external arrayBuffer : arrayBuffer Js.Promise.t = "arrayBuffer"
+      [@@bs.send.pipe: T.t]
+
     external blob : blob Js.Promise.t = "blob" [@@bs.send.pipe: T.t]
     external formData : formData Js.Promise.t = "formData" [@@bs.send.pipe: T.t]
     external json : Js.Json.t Js.Promise.t = "json" [@@bs.send.pipe: T.t]
@@ -276,87 +299,116 @@ module Body = struct
   end
 
   type t = body
-  include Impl(struct type nonrec t = t end)
+
+  include Impl (struct
+    type nonrec t = t
+  end)
 end
 
 module RequestInit = struct
   type t = requestInit
 
   let map f = function (* internal *)
-  | Some v -> Some (f v)
-  | None  -> None
+    | Some v -> Some (f v) | None -> None
 
   external make :
-    ?_method:string ->
-    ?headers:headersInit ->
-    ?body:bodyInit ->
-    ?referrer:string ->
-    ?referrerPolicy:string ->
-    ?mode:string ->
-    ?credentials:string ->
-    ?cache:string ->
-    ?redirect:string ->
-    ?integrity:string ->
-    ?keepalive:bool ->
-    ?signal:signal ->
-    unit -> requestInit = "" [@@bs.obj]
+     ?_method:string
+    -> ?headers:headersInit
+    -> ?body:bodyInit
+    -> ?referrer:string
+    -> ?referrerPolicy:string
+    -> ?mode:string
+    -> ?credentials:string
+    -> ?cache:string
+    -> ?redirect:string
+    -> ?integrity:string
+    -> ?keepalive:bool
+    -> ?signal:signal
+    -> unit
+    -> requestInit
+    = ""
+    [@@bs.obj]
+
   let make
-    ?method_:(method_: requestMethod option)
-    ?headers:(headers: headersInit option)
-    ?body:(body: bodyInit option)
-    ?referrer:(referrer: string option)
-    ?referrerPolicy:(referrerPolicy: referrerPolicy = None)
-    ?mode:(mode: requestMode option)
-    ?credentials:(credentials: requestCredentials option)
-    ?cache:(cache: requestCache option)
-    ?redirect:(redirect: requestRedirect option)
-    ?integrity:(integrity: string = "")
-    ?keepalive:(keepalive: bool option)
-    ?signal:(signal: signal option)
-    = make
-        ?_method: (map encodeRequestMethod method_)
-        ?headers
-        ?body
-        ?referrer
-        ~referrerPolicy: (encodeReferrerPolicy referrerPolicy)
-        ?mode: (map encodeRequestMode mode)
-        ?credentials: (map encodeRequestCredentials credentials)
-        ?cache: (map encodeRequestCache cache)
-        ?redirect: (map encodeRequestRedirect redirect)
-        ~integrity
-        ?keepalive: keepalive
-        ?signal
+      ?(method_ : requestMethod option)
+      ?(headers : headersInit option)
+      ?(body : bodyInit option)
+      ?(referrer : string option)
+      ?(referrerPolicy : referrerPolicy = None)
+      ?(mode : requestMode option)
+      ?(credentials : requestCredentials option)
+      ?(cache : requestCache option)
+      ?(redirect : requestRedirect option)
+      ?(integrity : string = "")
+      ?(keepalive : bool option)
+      ?(signal : signal option)
+    =
+    make
+      ?_method:(map encodeRequestMethod method_)
+      ?headers
+      ?body
+      ?referrer
+      ~referrerPolicy:(encodeReferrerPolicy referrerPolicy)
+      ?mode:(map encodeRequestMode mode)
+      ?credentials:(map encodeRequestCredentials credentials)
+      ?cache:(map encodeRequestCache cache)
+      ?redirect:(map encodeRequestRedirect redirect)
+      ~integrity
+      ?keepalive
+      ?signal
 end
 
 module Request = struct
   type t = request
 
-  include Body.Impl(struct type nonrec t = t end)
+  include Body.Impl (struct
+    type nonrec t = t
+  end)
 
   external make : string -> t = "Request" [@@bs.new]
   external makeWithInit : string -> requestInit -> t = "Request" [@@bs.new]
   external makeWithRequest : t -> t = "Request" [@@bs.new]
   external makeWithRequestInit : t -> requestInit -> t = "Request" [@@bs.new]
-
   external method_ : t -> string = "method" [@@bs.get]
-  let method_: t -> requestMethod = fun self -> decodeRequestMethod (method_ self)
-  external url : t -> string = "url"[@@bs.get]
+
+  let method_ : t -> requestMethod =
+   fun self -> decodeRequestMethod (method_ self)
+
+  external url : t -> string = "url" [@@bs.get]
   external headers : t -> headers = "headers" [@@bs.get]
   external type_ : t -> string = "type" [@@bs.get]
-  let type_: t -> requestType = fun self -> decodeRequestType (type_ self)
+
+  let type_ : t -> requestType = fun self -> decodeRequestType (type_ self)
+
   external destination : t -> string = "destination" [@@bs.get]
-  let destination: t -> requestDestination = fun self -> decodeRequestDestination (destination self)
+
+  let destination : t -> requestDestination =
+   fun self -> decodeRequestDestination (destination self)
+
   external referrer : t -> string = "referrer" [@@bs.get]
   external referrerPolicy : t -> string = "referrerPolicy" [@@bs.get]
-  let referrerPolicy: t -> referrerPolicy = fun self -> decodeReferrerPolicy (referrerPolicy self)
+
+  let referrerPolicy : t -> referrerPolicy =
+   fun self -> decodeReferrerPolicy (referrerPolicy self)
+
   external mode : t -> string = "mode" [@@bs.get]
-  let mode: t -> requestMode = fun self  -> decodeRequestMode (mode self)
+
+  let mode : t -> requestMode = fun self -> decodeRequestMode (mode self)
+
   external credentials : t -> string = "credentials" [@@bs.get]
-  let credentials: t -> requestCredentials = fun self -> decodeRequestCredentials (credentials self)
+
+  let credentials : t -> requestCredentials =
+   fun self -> decodeRequestCredentials (credentials self)
+
   external cache : t -> string = "cache" [@@bs.get]
-  let cache: t -> requestCache = fun self -> decodeRequestCache (cache self)
+
+  let cache : t -> requestCache = fun self -> decodeRequestCache (cache self)
+
   external redirect : t -> string = "redirect" [@@bs.get]
-  let redirect: t -> requestRedirect = fun self -> decodeRequestRedirect (redirect self)
+
+  let redirect : t -> requestRedirect =
+   fun self -> decodeRequestRedirect (redirect self)
+
   external integrity : t -> string = "integrity" [@@bs.get]
   external keepalive : t -> bool = "keepalive" [@@bs.get]
   external signal : t -> signal = "signal" [@@bs.get]
@@ -365,11 +417,16 @@ end
 module Response = struct
   type t = response
 
-  include Body.Impl(struct type nonrec t = t end)
+  include Body.Impl (struct
+    type nonrec t = t
+  end)
 
   external error : unit -> t = "error" [@@bs.val]
   external redirect : string -> t = "redirect" [@@bs.val]
-  external redirectWithStatus : string -> int (* enum-ish *) -> t = "redirect" [@@bs.val]
+
+  external redirectWithStatus : string -> int (* enum-ish *) -> t = "redirect"
+    [@@bs.val]
+
   external headers : t -> headers = "headers" [@@bs.get]
   external ok : t -> bool = "ok" [@@bs.get]
   external redirected : t -> bool = "redirected" [@@bs.get]
@@ -377,7 +434,6 @@ module Response = struct
   external statusText : t -> string = "statusText" [@@bs.get]
   external type_ : t -> string = "type" [@@bs.get]
   external url : t -> string = "url" [@@bs.get]
-
   external clone : t = "clone" [@@bs.send.pipe: t]
 end
 
@@ -385,46 +441,69 @@ module FormData = struct
   module EntryValue = struct
     type t
 
-    let classify : t -> [> `String of string | `File of file] = fun t ->
-      if Js.typeof t = "string" then `String (Obj.magic t)
+    let classify : t -> [> `String of string | `File of file ] =
+     fun t ->
+      if Js.typeof t = "string"
+      then `String (Obj.magic t)
       else `File (Obj.magic t)
   end
 
   module Iterator = Iterator
+
   type t = formData
 
   external make : unit -> t = "FormData" [@@bs.new]
-  external append : string -> string -> unit = "append" [@@bs.send.pipe : t]
-  external delete : string -> unit = "delete" [@@bs.send.pipe : t]
-  external get : string -> EntryValue.t option = "get" [@@bs.send.pipe : t]
-  external getAll : string -> EntryValue.t array = "getAll" [@@bs.send.pipe : t]
-  external set : string -> string -> unit = "set" [@@bs.send.pipe : t]
-  external has : string -> bool = "has" [@@bs.send.pipe : t]
+  external append : string -> string -> unit = "append" [@@bs.send.pipe: t]
+  external delete : string -> unit = "delete" [@@bs.send.pipe: t]
+  external get : string -> EntryValue.t option = "get" [@@bs.send.pipe: t]
+  external getAll : string -> EntryValue.t array = "getAll" [@@bs.send.pipe: t]
+  external set : string -> string -> unit = "set" [@@bs.send.pipe: t]
+  external has : string -> bool = "has" [@@bs.send.pipe: t]
   external keys : t -> string Iterator.t = "keys" [@@bs.send]
   external values : t -> EntryValue.t Iterator.t = "values" [@@bs.send]
 
-  external appendObject : string -> < .. > Js.t -> ?filename:string -> unit =
-    "append" [@@bs.send.pipe : t]
+  external appendObject :
+     string
+    -> < .. > Js.t
+    -> ?filename:string
+    -> unit
+    = "append"
+    [@@bs.send.pipe: t]
 
-  external appendBlob : string -> blob -> ?filename:string -> unit =
-    "append" [@@bs.send.pipe : t]
+  external appendBlob : string -> blob -> ?filename:string -> unit = "append"
+    [@@bs.send.pipe: t]
 
-  external appendFile : string -> file -> ?filename:string -> unit =
-    "append" [@@bs.send.pipe : t]
+  external appendFile : string -> file -> ?filename:string -> unit = "append"
+    [@@bs.send.pipe: t]
 
-  external setObject : string -> < .. > Js.t -> ?filename:string -> unit =
-    "set" [@@bs.send.pipe : t]
+  external setObject : string -> < .. > Js.t -> ?filename:string -> unit = "set"
+    [@@bs.send.pipe: t]
 
-  external setBlob : string -> blob -> ?filename:string -> unit =
-    "set" [@@bs.send.pipe : t]
+  external setBlob : string -> blob -> ?filename:string -> unit = "set"
+    [@@bs.send.pipe: t]
 
-  external setFile : string -> file -> ?filename:string -> unit =
-    "set" [@@bs.send.pipe : t]
+  external setFile : string -> file -> ?filename:string -> unit = "set"
+    [@@bs.send.pipe: t]
 
-  external entries : t -> (string * EntryValue.t) Iterator.t = "entries" [@@bs.send]
+  external entries : t -> (string * EntryValue.t) Iterator.t = "entries"
+    [@@bs.send]
 end
 
 external fetch : string -> response Js.Promise.t = "fetch" [@@bs.val]
-external fetchWithInit : string -> requestInit -> response Js.Promise.t = "fetch" [@@bs.val]
-external fetchWithRequest : request -> response Js.Promise.t = "fetch" [@@bs.val]
-external fetchWithRequestInit : request -> requestInit -> response Js.Promise.t = "fetch" [@@bs.val]
+
+external fetchWithInit :
+   string
+  -> requestInit
+  -> response Js.Promise.t
+  = "fetch"
+  [@@bs.val]
+
+external fetchWithRequest : request -> response Js.Promise.t = "fetch"
+  [@@bs.val]
+
+external fetchWithRequestInit :
+   request
+  -> requestInit
+  -> response Js.Promise.t
+  = "fetch"
+  [@@bs.val]
