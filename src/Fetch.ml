@@ -301,16 +301,16 @@ module RequestInit = struct
     ?signal:signal ->
     unit -> requestInit = "" [@@bs.obj]
   let make
-    ?method_:(method_: requestMethod option) 
+    ?method_:(method_: requestMethod option)
     ?headers:(headers: headersInit option)
     ?body:(body: bodyInit option)
-    ?referrer:(referrer: string option) 
-    ?referrerPolicy:(referrerPolicy: referrerPolicy = None) 
-    ?mode:(mode: requestMode option) 
-    ?credentials:(credentials: requestCredentials option) 
-    ?cache:(cache: requestCache option) 
-    ?redirect:(redirect: requestRedirect option) 
-    ?integrity:(integrity: string = "") 
+    ?referrer:(referrer: string option)
+    ?referrerPolicy:(referrerPolicy: referrerPolicy = None)
+    ?mode:(mode: requestMode option)
+    ?credentials:(credentials: requestCredentials option)
+    ?cache:(cache: requestCache option)
+    ?redirect:(redirect: requestRedirect option)
+    ?integrity:(integrity: string = "")
     ?keepalive:(keepalive: bool option)
     ?signal:(signal: signal option)
     = make
@@ -381,7 +381,7 @@ module Response = struct
   external clone : t = "clone" [@@bs.send.pipe: t]
 end
 
-module FormData = struct 
+module FormData = struct
   module EntryValue = struct
     type t
 
@@ -390,7 +390,7 @@ module FormData = struct
       else `File (Obj.magic t)
   end
 
-  module Iterator = Fetch__Iterator
+  module Iterator = Iterator
   type t = formData
 
   external make : unit -> t = "FormData" [@@bs.new]
