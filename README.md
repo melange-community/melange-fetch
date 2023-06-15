@@ -1,6 +1,6 @@
 # melange-fetch
 
-Low-level bindings to fetch for [BuckleScript](https://github.com/bucklescript/bucklescript).
+Low-level bindings to fetch for [Melange](https://melange.re/).
 
 [![Issues](https://img.shields.io/github/issues/melange-community/melange-fetch.svg)](https://github.com/melange-community/melange-fetch/issues)
 [![Last Commit](https://img.shields.io/github/last-commit/melange-community/melange-fetch.svg)]()
