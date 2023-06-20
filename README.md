@@ -22,7 +22,7 @@ Js.Promise.(
 ## Installation
 
 ```sh
-opam pin add melange-fetch.dev https://github.com/melange-community/melange-fetch
+opam pin add melange-fetch.dev git+https://github.com/melange-community/melange-fetch.git#master
 ```
 
 Then add `melange-fetch` to the `libraries` field in your dune file:
