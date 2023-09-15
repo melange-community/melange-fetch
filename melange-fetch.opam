@@ -9,7 +9,7 @@ bug-reports: "https://github.com/melange-community/melange-fetch"
 depends: [
   "dune" {>= "3.8"}
   "ocaml" {>= "4.13.0"}
-  "melange"
+  "melange" {>= "2.0.0"}
   "odoc" {with-doc}
 ]
 build: [
