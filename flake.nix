@@ -24,6 +24,16 @@
           melange-src.overlays.default
         ];
         inherit (pkgs) nodejs_latest lib stdenv darwin;
+        mkShell = { inputsFrom, buildInputs ? [ ] }: pkgs.mkShell {
+          nativeBuildInputs = with pkgs; [
+            yarn
+            nodejs_latest
+          ] ++ (with pkgs.ocamlPackages; [
+            ocamlformat
+            merlin
+          ]);
+          inherit inputsFrom buildInputs;
+        };
       in
       rec {
         packages = {
@@ -36,15 +46,14 @@
             propagatedBuildInputs = with pkgs.ocamlPackages; [ melange ];
           };
         };
-        devShells.default = pkgs.mkShell {
-          inputsFrom = [ packages.default ];
-          nativeBuildInputs = with pkgs; [
-            yarn
-            nodejs_latest
-          ] ++ (with pkgs.ocamlPackages; [
-            ocamlformat
-            merlin
-          ]);
+        devShells = {
+          default = mkShell {
+            inputsFrom = [ packages.default ];
+          };
+          release = mkShell {
+            inputsFrom = [ packages.default ];
+            buildInputs = with pkgs; [ cacert curl ocamlPackages.dune-release git ];
+          };
         };
       });
 }
