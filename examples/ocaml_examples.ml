@@ -18,10 +18,10 @@ let _ =
     |> then_ (fun json -> Js.Json.decodeArray json |> resolve)
     |> then_ (fun opt -> Belt.Option.getExn opt |> resolve)
     |> then_ (fun items ->
-           items
-           |> Js.Array.map (fun item ->
-                  item |> Js.Json.decodeString |> Belt.Option.getExn)
-           |> resolve))
+      items
+      |> Js.Array.map (fun item ->
+        item |> Js.Json.decodeString |> Belt.Option.getExn)
+      |> resolve))
 
 let _ =
   let headers = [%bs.raw {|

@@ -24,6 +24,6 @@
  (synopsis "Fetch API support for Melange")
  (depends
   (ocaml
-   (>= "4.13.0"))
+   (>= "5.1"))
   (melange
    (>= "2.0.0"))))

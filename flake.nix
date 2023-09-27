@@ -1,5 +1,5 @@
 {
-  description = "melange-relay Nix Flake";
+  description = "melange-fetch Nix Flake";
 
   inputs.nix-filter.url = "github:numtide/nix-filter";
   inputs.flake-utils.url = "github:numtide/flake-utils";
@@ -29,6 +29,7 @@
             yarn
             nodejs_latest
           ] ++ (with pkgs.ocamlPackages; [
+            reason
             ocamlformat
             merlin
           ]);
