@@ -1,0 +1,40 @@
+on:
+  pull_request:
+  push:
+   branches:
+     - master
+  schedule:
+    # Prime the caches every Monday
+    - cron: 0 1 * * MON
+
+jobs:
+  build-sample-project:
+    name: Build and test project
+    strategy:
+      matrix:
+        system:
+          - macos-latest
+          - ubuntu-latest
+        ocaml-compiler:
+          - 5.1.x
+
+      fail-fast: false
+    runs-on: ${{ matrix.system }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: current
+
+      - name: Use OCaml ${{ matrix.ocaml-compiler }}
+        uses: ocaml/setup-ocaml@v2
+        with:
+          ocaml-compiler: ${{ matrix.ocaml-compiler }}
+          opam-depext: false
+
+      - name: Install all deps
+        run: opam install -y . --deps-only
+
+      - name: Build everything
+        run: opam exec dune build
