@@ -1,6 +1,7 @@
 (library
  (name fetch)
  (public_name melange-fetch)
+ (libraries melange)
  (preprocess
   (pps melange.ppx))
  (modes melange))
