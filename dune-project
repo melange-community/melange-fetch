@@ -23,7 +23,6 @@
  (name melange-fetch)
  (synopsis "Fetch API support for Melange")
  (depends
-  (ocaml
-   (>= "5.1"))
+  ocaml
   (melange
    (>= "2.0.0"))))
