@@ -32,6 +32,12 @@ type requestMethod =
   | Patch
   | Other of string
 
+module AbortSignal : sig
+  type t = signal
+
+  external aborted : t -> bool = "aborted" [@@mel.get]
+end
+
 module AbortController : sig
   (* Experimental API *)
   type t = abortController
