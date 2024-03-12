@@ -36,6 +36,11 @@ module AbortSignal : sig
   type t = signal
 
   external aborted : t -> bool = "aborted" [@@mel.get]
+  
+  
+  external reason : t -> string Js.Nullable.t = "reason" [@@mel.get]
+  (** A JavaScript value that indicates the abort reason, or undefined,
+      if not aborted. *)
 end
 
 module AbortController : sig
