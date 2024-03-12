@@ -17,6 +17,14 @@ type urlSearchParams (* URL *)
 type blob
 type file
 
+module AbortSignal = struct
+  type t = signal
+
+  external aborted : t -> bool = "aborted" [@@mel.get]
+  
+  external reason : t -> string Js.Nullable.t = "reason" [@@mel.get]
+end
+
 module AbortController = struct
   type t = abortController
 
