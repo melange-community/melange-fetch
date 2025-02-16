@@ -36,11 +36,11 @@ module AbortSignal : sig
   type t = signal
 
   external aborted : t -> bool = "aborted" [@@mel.get]
-  
-  
-  external reason : t -> string Js.Nullable.t = "reason" [@@mel.get]
-  (** A JavaScript value that indicates the abort reason, or undefined,
-      if not aborted. *)
+
+  external reason : t -> string Js.Nullable.t = "reason"
+  [@@mel.get]
+  (** A JavaScript value that indicates the abort reason, or undefined, if not
+      aborted. *)
 end
 
 module AbortController : sig
@@ -51,7 +51,7 @@ module AbortController : sig
   external signal : t -> signal = "signal" [@@mel.get]
 
   (* Experimental API *)
-  external abort : unit = "abort" [@@mel.send.pipe: t]
+  external abort : t -> unit = "abort" [@@mel.send]
 
   (* Experimental API *)
   external make : unit -> t = "AbortController" [@@mel.new]
@@ -132,19 +132,22 @@ module Headers : sig
 
   external make : t = "Headers" [@@mel.new]
   external makeWithInit : headersInit -> t = "Headers" [@@mel.new]
-  external append : string -> string -> unit = "append" [@@mel.send.pipe: t]
-  external delete : string -> unit = "delete" [@@mel.send.pipe: t]
+
+  external append : string -> string -> (t[@mel.this]) -> unit = "append"
+  [@@mel.send]
+
+  external delete : string -> (t[@mel.this]) -> unit = "delete" [@@mel.send]
   (* entries *)
   (* very experimental *)
 
-  external get : string -> string option = "get"
-  [@@mel.send.pipe: t] [@@mel.return { null_to_opt }]
+  external get : string -> (t[@mel.this]) -> string option = "get"
+  [@@mel.send] [@@mel.return { null_to_opt }]
 
-  external has : string -> bool = "has" [@@mel.send.pipe: t]
+  external has : string -> (t[@mel.this]) -> bool = "has" [@@mel.send]
   (* keys *)
   (* very experimental *)
 
-  external set : string -> string -> unit = "set" [@@mel.send.pipe: t]
+  external set : string -> string -> (t[@mel.this]) -> unit = "set" [@@mel.send]
   (* values *)
   (* very experimental *)
 end
@@ -165,13 +168,13 @@ module Body : sig
   external body : t -> readableStream = "body" [@@mel.get]
   external bodyUsed : t -> bool = "bodyUsed" [@@mel.get]
 
-  external arrayBuffer : arrayBuffer Js.Promise.t = "arrayBuffer"
-  [@@mel.send.pipe: t]
+  external arrayBuffer : t -> arrayBuffer Js.Promise.t = "arrayBuffer"
+  [@@mel.send]
 
-  external blob : blob Js.Promise.t = "blob" [@@mel.send.pipe: t]
-  external formData : formData Js.Promise.t = "formData" [@@mel.send.pipe: t]
-  external json : Js.Json.t Js.Promise.t = "json" [@@mel.send.pipe: t]
-  external text : string Js.Promise.t = "text" [@@mel.send.pipe: t]
+  external blob : t -> blob Js.Promise.t = "blob" [@@mel.send]
+  external formData : t -> formData Js.Promise.t = "formData" [@@mel.send]
+  external json : t -> Js.Json.t Js.Promise.t = "json" [@@mel.send]
+  external text : t -> string Js.Promise.t = "text" [@@mel.send]
 end
 
 module RequestInit : sig
@@ -220,13 +223,13 @@ module Request : sig
   external body : t -> readableStream = "body" [@@mel.get]
   external bodyUsed : t -> bool = "bodyUsed" [@@mel.get]
 
-  external arrayBuffer : arrayBuffer Js.Promise.t = "arrayBuffer"
-  [@@mel.send.pipe: t]
+  external arrayBuffer : t -> arrayBuffer Js.Promise.t = "arrayBuffer"
+  [@@mel.send]
 
-  external blob : blob Js.Promise.t = "blob" [@@mel.send.pipe: t]
-  external formData : formData Js.Promise.t = "formData" [@@mel.send.pipe: t]
-  external json : Js.Json.t Js.Promise.t = "json" [@@mel.send.pipe: t]
-  external text : string Js.Promise.t = "text" [@@mel.send.pipe: t]
+  external blob : t -> blob Js.Promise.t = "blob" [@@mel.send]
+  external formData : t -> formData Js.Promise.t = "formData" [@@mel.send]
+  external json : t -> Js.Json.t Js.Promise.t = "json" [@@mel.send]
+  external text : t -> string Js.Promise.t = "text" [@@mel.send]
 end
 
 module Response : sig
@@ -242,19 +245,19 @@ module Response : sig
   external statusText : t -> string = "statusText" [@@mel.get]
   external type_ : t -> string = "type" [@@mel.get]
   external url : t -> string = "url" [@@mel.get]
-  external clone : t = "clone" [@@mel.send.pipe: t]
+  external clone : t -> t = "clone" [@@mel.send]
 
   (* Body.Impl *)
   external body : t -> readableStream = "body" [@@mel.get]
   external bodyUsed : t -> bool = "bodyUsed" [@@mel.get]
 
-  external arrayBuffer : arrayBuffer Js.Promise.t = "arrayBuffer"
-  [@@mel.send.pipe: t]
+  external arrayBuffer : t -> arrayBuffer Js.Promise.t = "arrayBuffer"
+  [@@mel.send]
 
-  external blob : blob Js.Promise.t = "blob" [@@mel.send.pipe: t]
-  external formData : formData Js.Promise.t = "formData" [@@mel.send.pipe: t]
-  external json : Js.Json.t Js.Promise.t = "json" [@@mel.send.pipe: t]
-  external text : string Js.Promise.t = "text" [@@mel.send.pipe: t]
+  external blob : t -> blob Js.Promise.t = "blob" [@@mel.send]
+  external formData : t -> formData Js.Promise.t = "formData" [@@mel.send]
+  external json : t -> Js.Json.t Js.Promise.t = "json" [@@mel.send]
+  external text : t -> string Js.Promise.t = "text" [@@mel.send]
 end
 
 module FormData : sig
@@ -262,7 +265,7 @@ module FormData : sig
     type t
     (** This represents a
         {{:https://developer.mozilla.org/en-US/docs/Web/API/FormDataEntryValue}
-          FormDataEntryValue}. *)
+         FormDataEntryValue}. *)
 
     val classify : t -> [> `String of string | `File of file ]
     (** [classify entryValue] safely casts the [entryValue] to its correct
@@ -274,12 +277,20 @@ module FormData : sig
   type t = formData
 
   external make : unit -> t = "FormData" [@@mel.new]
-  external append : string -> string -> unit = "append" [@@mel.send.pipe: t]
-  external delete : string -> unit = "delete" [@@mel.send.pipe: t]
-  external get : string -> EntryValue.t option = "get" [@@mel.send.pipe: t]
-  external getAll : string -> EntryValue.t array = "getAll" [@@mel.send.pipe: t]
-  external set : string -> string -> unit = "set" [@@mel.send.pipe: t]
-  external has : string -> bool = "has" [@@mel.send.pipe: t]
+
+  external append : string -> string -> (t[@mel.this]) -> unit = "append"
+  [@@mel.send]
+
+  external delete : string -> (t[@mel.this]) -> unit = "delete" [@@mel.send]
+
+  external get : string -> (t[@mel.this]) -> EntryValue.t option = "get"
+  [@@mel.send]
+
+  external getAll : string -> (t[@mel.this]) -> EntryValue.t array = "getAll"
+  [@@mel.send]
+
+  external set : string -> string -> (t[@mel.this]) -> unit = "set" [@@mel.send]
+  external has : string -> (t[@mel.this]) -> bool = "has" [@@mel.send]
   external keys : t -> string Iterator.t = "keys" [@@mel.send]
   external values : t -> EntryValue.t Iterator.t = "values" [@@mel.send]
 
@@ -287,26 +298,57 @@ module FormData : sig
      string
     -> < .. > Js.t
     -> ?filename:string
+    -> (t[@mel.this])
     -> unit
     = "append"
-  [@@mel.send.pipe: t]
+  [@@mel.send]
   (** This is for React Native compatibility purposes *)
 
-  external appendBlob : string -> blob -> ?filename:string -> unit = "append"
-  [@@mel.send.pipe: t]
+  external appendBlob :
+     string
+    -> blob
+    -> ?filename:string
+    -> (t[@mel.this])
+    -> unit
+    = "append"
+  [@@mel.send]
 
-  external appendFile : string -> file -> ?filename:string -> unit = "append"
-  [@@mel.send.pipe: t]
+  external appendFile :
+     string
+    -> file
+    -> ?filename:string
+    -> (t[@mel.this])
+    -> unit
+    = "append"
+  [@@mel.send]
 
-  external setObject : string -> < .. > Js.t -> ?filename:string -> unit = "set"
-  [@@mel.send.pipe: t]
+  external setObject :
+     string
+    -> < .. > Js.t
+    -> ?filename:string
+    -> (t[@mel.this])
+    -> unit
+    = "set"
+  [@@mel.send]
   (** This is for React Native compatibility purposes *)
 
-  external setBlob : string -> blob -> ?filename:string -> unit = "set"
-  [@@mel.send.pipe: t]
+  external setBlob :
+     string
+    -> blob
+    -> ?filename:string
+    -> (t[@mel.this])
+    -> unit
+    = "set"
+  [@@mel.send]
 
-  external setFile : string -> file -> ?filename:string -> unit = "set"
-  [@@mel.send.pipe: t]
+  external setFile :
+     string
+    -> file
+    -> ?filename:string
+    -> (t[@mel.this])
+    -> unit
+    = "set"
+  [@@mel.send]
 
   external entries : t -> (string * EntryValue.t) Iterator.t = "entries"
   [@@mel.send]
