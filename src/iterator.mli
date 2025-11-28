@@ -1,7 +1,8 @@
-(** We need to bind to JavaScript Iterators for FormData functionality.
-    But ideally this binding should be moved into BuckleScript itself.
+(** We need to bind to JavaScript Iterators for FormData functionality. But
+    ideally this binding should be moved into BuckleScript itself.
 
-    @see {{: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols}} *)
+    @see <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols>
+*)
 
 module Next : sig
   type 'a t
