@@ -21,7 +21,7 @@ init: create-switch install ## Configure everything to develop this repository i
 .PHONY: install
 install: ## Install development dependencies
 	opam update
-	opam install -y . --deps-only
+	opam install -y . --deps-only --with-dev-setup
 	opam pin -y add $(project_name).dev . --working-dir
 
 .PHONY: build
