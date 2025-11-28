@@ -32,7 +32,6 @@ jobs:
         uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
-          opam-depext: false
 
       - name: Install all deps
         run: opam install -y . --deps-only
