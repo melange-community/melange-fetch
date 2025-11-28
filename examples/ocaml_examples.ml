@@ -19,12 +19,12 @@ let _ =
     |> then_ (fun opt -> Belt.Option.getExn opt |> resolve)
     |> then_ (fun items ->
       items
-      |> Js.Array.map (fun item ->
+      |> Js.Array.map ~f:(fun item ->
         item |> Js.Json.decodeString |> Belt.Option.getExn)
       |> resolve))
 
 let _ =
-  let headers = [%bs.raw {|
+  let headers = [%mel.raw {|
     {"Content-type": "application/json"}
   |}] in
   let payload = Js.Dict.empty () in

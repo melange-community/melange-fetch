@@ -25,4 +25,7 @@
  (depends
   ocaml
   (melange
-   (>= "5.0.0"))))
+   (>= "5.0.0"))
+  (reason :with-dev-setup)
+  (ocamlformat :with-dev-setup)
+  (ocaml-lsp-server :with-dev-setup)))

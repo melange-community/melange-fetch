@@ -28,6 +28,10 @@ install: ## Install development dependencies
 build: ## Build the project
 	$(DUNE) build @melange
 
+.PHONY: dev
+dev: ## Build the project
+	$(DUNE) build @melange --watch
+
 .PHONY: build_verbose
 build_verbose: ## Build the project
 	$(DUNE) build --verbose @melange

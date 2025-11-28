@@ -1,0 +1,6 @@
+(library
+ (name examples)
+ (preprocess
+  (pps melange.ppx))
+ (modes melange)
+ (libraries melange-fetch melange.belt melange.js))
