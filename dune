@@ -1,0 +1,5 @@
+(melange.emit
+ (target examples)
+ (preprocess
+  (pps melange.ppx))
+ (libraries melange-fetch examples))
