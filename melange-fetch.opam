@@ -11,6 +11,9 @@ depends: [
   "ocaml"
   "melange" {>= "5.0.0"}
   "odoc" {with-doc}
+  "reason" {with-dev-setup}
+  "ocamlformat" {with-dev-setup}
+  "ocaml-lsp-server" {with-dev-setup}
 ]
 build: [
   ["dune" "subst"] {dev}

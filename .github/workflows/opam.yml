@@ -18,24 +18,20 @@ jobs:
           - ubuntu-latest
         ocaml-compiler:
           - 5.1.x
+          - 5.2.x
 
       fail-fast: false
     runs-on: ${{ matrix.system }}
     steps:
       - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v6
-        with:
-          node-version: current
-
       - name: Use OCaml ${{ matrix.ocaml-compiler }}
         uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
-          opam-depext: false
 
       - name: Install all deps
-        run: opam install -y . --deps-only
+        run: opam install -y . --deps-only --with-dev-setup
 
       - name: Build everything
         run: opam exec dune build

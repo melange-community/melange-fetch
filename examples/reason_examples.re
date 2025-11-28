@@ -24,7 +24,7 @@ let _ =
     |> then_(opt => Belt.Option.getExn(opt) |> resolve)
     |> then_(items =>
          items
-         |> Js.Array.map(item =>
+         |> Js.Array.map(~f=item =>
               item |> Js.Json.decodeString |> Belt.Option.getExn
             )
          |> resolve
@@ -54,7 +54,11 @@ let _ = {
   let formData = Fetch.FormData.make();
   Fetch.FormData.appendObject(
     "image0",
-    {"type": "image/jpg", "uri": "path/to/it", "name": "image0.jpg"},
+    {
+      "type": "image/jpg",
+      "uri": "path/to/it",
+      "name": "image0.jpg",
+    },
     formData,
   );
 
