@@ -18,15 +18,12 @@ jobs:
           - ubuntu-latest
         ocaml-compiler:
           - 5.1.x
+          - 5.2.x
 
       fail-fast: false
     runs-on: ${{ matrix.system }}
     steps:
       - uses: actions/checkout@v5
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: current
 
       - name: Use OCaml ${{ matrix.ocaml-compiler }}
         uses: ocaml/setup-ocaml@v3
