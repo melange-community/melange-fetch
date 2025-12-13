@@ -7,13 +7,13 @@ license: "MIT"
 homepage: "https://github.com/melange-community/melange-fetch"
 bug-reports: "https://github.com/melange-community/melange-fetch"
 depends: [
-  "dune" {>= "3.8"}
+  "dune" {>= "3.18"}
   "ocaml"
   "melange" {>= "5.0.0"}
-  "odoc" {with-doc}
   "reason" {with-dev-setup}
   "ocamlformat" {with-dev-setup}
   "ocaml-lsp-server" {with-dev-setup}
+  "odoc" {with-doc}
 ]
 build: [
   ["dune" "subst"] {dev}
@@ -30,3 +30,4 @@ build: [
   ]
 ]
 dev-repo: "git+https://github.com/melange-community/melange-fetch.git"
+x-maintenance-intent: ["(latest)"]
