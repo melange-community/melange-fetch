@@ -17,8 +17,7 @@ jobs:
           - macos-latest
           - ubuntu-latest
         ocaml-compiler:
-          - 5.1.x
-          - 5.2.x
+          - 5.5.x
 
       fail-fast: false
     runs-on: ${{ matrix.system }}
