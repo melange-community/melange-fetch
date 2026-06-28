@@ -42,7 +42,8 @@ let _ = {
         ~method_=Post,
         ~body=
           Fetch.BodyInit.make(Js.Json.stringify(Js.Json.object_(payload))),
-        ~headers=Fetch.HeadersInit.make({"Content-Type": "application/json"}),
+        ~headers=
+          Fetch.HeadersInit.make({ "Content-Type": "application/json" }),
         (),
       ),
     )
@@ -68,7 +69,7 @@ let _ = {
       Fetch.RequestInit.make(
         ~method_=Post,
         ~body=Fetch.BodyInit.makeWithFormData(formData),
-        ~headers=Fetch.HeadersInit.make({"Accept": "*"}),
+        ~headers=Fetch.HeadersInit.make({ "Accept": "*" }),
         (),
       ),
     )
